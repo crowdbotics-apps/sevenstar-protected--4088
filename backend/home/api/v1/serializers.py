@@ -109,11 +109,12 @@ class AppCitizenSignupSerializer(serializers.Serializer):
     profile_image = serializers.CharField(max_length=100)
 
     def create(self, validated_data):
-      if validated_data.get('username') is None:
-        validated_data['username'] = generate_unique_username([
+        if validated_data.get('username') is None:
+          validated_data['username'] = generate_unique_username([
                 validated_data.get('first_name'), validated_data.get('last_name'),
                 validated_data.get('email'), 'user'
             ])
+
         user = User(
             email=validated_data.get('email'),
             first_name=validated_data.get('first_name'),
@@ -142,7 +143,6 @@ class AppCitizenSignupSerializer(serializers.Serializer):
            licence_photo=validated_data.get('driver_licence_no'),
            profile_image=validated_data.get('profile_image'),
         )  
-        validated_data['username'] = user.username; 
 
         return validated_data
 
