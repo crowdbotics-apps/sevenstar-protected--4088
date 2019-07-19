@@ -5,7 +5,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from home.api.v1.serializers import AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
+from home.api.v1.serializers import AppCitizenSignupSerializer,AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
 from home.models import CustomText, HomePage
 
 
@@ -18,7 +18,7 @@ class AppOfficerViewSet(ModelViewSet):
     http_method_names = ['post']
 
 class AppCitizenViewSet(ModelViewSet):
-    serializer_class = AppOfficerSignupSerializer
+    serializer_class = AppCitizenSignupSerializer
     http_method_names = ['post']
 
 class LoginViewSet(ViewSet):
