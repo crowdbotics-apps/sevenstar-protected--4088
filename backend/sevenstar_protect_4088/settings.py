@@ -174,7 +174,7 @@ EMAIL_HOST_PASSWORD = env.str('SENDGRID_PASSWORD', '')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
+AUTH_PROFILE_MODULE = "home.UserProfile"
 # Import local settings
 try:
     from .local_settings import *

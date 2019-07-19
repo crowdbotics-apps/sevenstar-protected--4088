@@ -3,7 +3,7 @@ from allauth.utils import generate_unique_username
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from home.models import CustomText, HomePage
+from home.models import CustomText, HomePage,UserProfile
 
 
 class SignupSerializer(serializers.ModelSerializer):
@@ -41,6 +41,51 @@ class SignupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This field is required.')
         return value
 
+class AppOfficerSignupSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True)
+    first_name = serializers.CharField(write_only=True,max_length=100)
+    last_name = serializers.CharField(write_only=True,max_length=100)
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+    )
+    username = serializers.CharField(max_length=100, required=False)
+    officer_batch_no = serializers.CharField(write_only=True,max_length=50)
+    officer_department = serializers.CharField(write_only=True,max_length=100)
+
+    def create(self, validated_data):
+        username = generate_unique_username([
+                validated_data.get('first_name'), validated_data.get('last_name'),
+                validated_data.get('email'), 'user'
+            ])
+        user = User(
+            email=validated_data.get('email'),
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name'),
+            username=username
+        )
+        
+        user.set_password(validated_data.get('password'))
+        user.save()
+        
+        #user_profiles = UserProfile.objects.filter(user=user)
+        #print(user_profiles)
+        #profile = user_profiles[0]
+        #ROLE=2 FOR OFFICE AND 1 FOR CITIZEN
+        UserProfile.objects.create(
+           user=user,
+           officer_department=validated_data.get('officer_department'),
+           role=2,
+           officer_batch_no=validated_data.get('officer_batch_no')
+        )  
+        validated_data['username'] = user.username; 
+
+        return validated_data
+
+    def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError('This field is required.')
+        return value
 
 class CustomTextSerializer(serializers.ModelSerializer):
     class Meta:

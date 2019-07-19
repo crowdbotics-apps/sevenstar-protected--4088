@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 
 from django.db import models
@@ -15,6 +17,11 @@ class UserProfile(models.Model):
         (0, 'Not Approved'),
         (1, 'Approved')
     )
+    GENDER_CHOICES = (
+        (0, 'Female'),
+        (1, 'Male')
+    )
+    gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location_latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
     location_longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
@@ -37,7 +44,6 @@ class UserProfile(models.Model):
 
     def __str__(self):  # __unicode__ for Python 2
         return self.user.username
-
 
 class CustomText(models.Model):
     title = models.CharField(max_length=150)
