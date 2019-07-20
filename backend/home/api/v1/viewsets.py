@@ -4,10 +4,21 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from home.api.v1.serializers import AppCitizenSignupSerializer,AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
 from home.models import CustomText, HomePage
 
+
+class CitizenView(APIView):
+    def post(self, request):
+        data = request.data.get('data')
+        return Response({"response": "success"})
+
+class OfficerView(APIView):
+    def post(self, request):
+        return Response({"response": "success"})
 
 class SignupViewSet(ModelViewSet):
     serializer_class = SignupSerializer

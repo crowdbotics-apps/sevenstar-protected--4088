@@ -43,16 +43,18 @@ class SignupSerializer(serializers.ModelSerializer):
 
 class AppOfficerSignupSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    first_name = serializers.CharField(max_length=100)
-    last_name = serializers.CharField(max_length=100)
+    first_name = serializers.CharField(write_only=True,max_length=100)
+    last_name = serializers.CharField(write_only=True,max_length=100)
     password = serializers.CharField(
         write_only=True,
         required=True,
     )
     username = serializers.CharField(max_length=100, required=False)
-    officer_batch_no = serializers.CharField(max_length=50)
-    officer_department = serializers.CharField(max_length=100)
-    profile_image = serializers.CharField(max_length=100)
+    success_message = serializers.CharField(required=False)
+    success = serializers.BooleanField(required=False)
+    officer_batch_no = serializers.CharField(write_only=True,max_length=50)
+    officer_department = serializers.CharField(write_only=True,max_length=100)
+    profile_image = serializers.CharField(write_only=True,max_length=100)
 
     def create(self, validated_data):
         if validated_data.get('username') is None:
@@ -69,8 +71,7 @@ class AppOfficerSignupSerializer(serializers.Serializer):
         )
         
         user.set_password(validated_data.get('password'))
-        user.save()
-        
+        user.save()        
         #ROLE=2 FOR OFFICE AND 1 FOR CITIZEN
         UserProfile.objects.create(
            user=user,
@@ -79,8 +80,14 @@ class AppOfficerSignupSerializer(serializers.Serializer):
            officer_batch_no=validated_data.get('officer_batch_no'),
            profile_image=validated_data.get('profile_image'),
         )
-
+        validated_data['success'] = True
         return validated_data
+  
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+          raise serializers.ValidationError('username already exists.') 
+
+        return value
 
     def validate_email(self, value):
         if not value:
@@ -107,6 +114,8 @@ class AppCitizenSignupSerializer(serializers.Serializer):
     driver_licence_no = serializers.CharField(max_length=50)
     licence_photo = serializers.CharField(max_length=100)
     profile_image = serializers.CharField(max_length=100)
+    success_message = serializers.CharField(required=False)
+    success = serializers.BooleanField(required=False)
 
     def create(self, validated_data):
         if validated_data.get('username') is None:
@@ -121,10 +130,9 @@ class AppCitizenSignupSerializer(serializers.Serializer):
             last_name=validated_data.get('last_name'),
             username=validated_data.get('username')
         )
-        
+
         user.set_password(validated_data.get('password'))
         user.save()
-        
         #user_profiles = UserProfile.objects.filter(user=user)
         #print(user_profiles)
         #profile = user_profiles[0]
@@ -144,7 +152,14 @@ class AppCitizenSignupSerializer(serializers.Serializer):
            profile_image=validated_data.get('profile_image'),
         )  
 
+        validated_data['success'] = True
         return validated_data
+    
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+          raise serializers.ValidationError('username already exists.') 
+
+        return value
 
     def validate_email(self, value):
         if not value:
