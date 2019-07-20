@@ -19,9 +19,11 @@ import styles from './styles';
 
 class Signup extends Component {
   state = {
-    username: '',
-    password: '',
-    confirmPassword: '',
+    first_name: '',
+    last_name: '',
+    department: '',
+    batch_no: '',
+    profile_image:''
   };
 
   // navigate to login screen after a successful signup
@@ -42,11 +44,7 @@ class Signup extends Component {
         <Content contentContainerStyle={styles.content}>
           {/* Logo */}
           <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require('../../assets/images/icon.png')}
-            />
-            <Text style={styles.logoText}>Crowdbotics</Text>
+            <Text style={styles.logoText}>Please, fill out the form</Text>
           </View>
 
           {/* Form */}
@@ -58,42 +56,84 @@ class Signup extends Component {
             >
               <Input
                 style={styles.input}
-                placeholder="Username"
+                placeholder="First Name"
                 placeholderTextColor="#afb0d1"
                 autoCapitalize="none"
-                onChangeText={username => this.setState({ username })}
+                onChangeText={first_name => this.setState({ first_name })}
               />
             </Item>
-            <Item
-              style={styles.item}
-              rounded
-              last
-            >
-              <Input
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#afb0d1"
-                onChangeText={password => this.setState({ password })}
-                secureTextEntry
-              />
-            </Item>
-            <Item
-              style={styles.item}
-              rounded
-              last
-            >
-              <Input
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="#afb0d1"
-                onChangeText={confirmPassword => this.setState({ confirmPassword })}
-                secureTextEntry
-              />
-            </Item>
-          </Form>
 
-          <View style={styles.buttonContainer}>
-            {/* Login Button */}
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Last Name"
+                placeholderTextColor="#afb0d1"
+                autoCapitalize="none"
+                onChangeText={last_name => this.setState({ last_name })}
+              />
+            </Item>
+
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Last Name"
+                placeholderTextColor="#afb0d1"
+                autoCapitalize="none"
+                onChangeText={department => this.setState({ department })}
+              />
+            </Item>
+
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Department"
+                placeholderTextColor="#afb0d1"
+                autoCapitalize="none"
+                onChangeText={first_name => this.setState({ first_name })}
+              />
+            </Item>
+
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Badge Number"
+                placeholderTextColor="#afb0d1"
+                autoCapitalize="none"
+                onChangeText={batch_no => this.setState({ batch_no })}
+              />
+            </Item>
+
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Upload Your Photo"
+                placeholderTextColor="#afb0d1"
+                autoCapitalize="none"
+                onChangeText={profile_image => this.setState({ profile_image })}
+              />
+            </Item>
+
+            <View style={styles.buttonContainer}>
             <Button
               style={styles.button}
               onPress={this.onSignupButtonPressed}
@@ -103,17 +143,12 @@ class Signup extends Component {
               dark
               rounded
             >
-              <Text style={styles.signupText}>PROCE</Text>
+              <Text style={styles.signupText}>COMPLETE</Text>
             </Button>
-
-            {/* Signup Button */}
-            <View style={styles.loginContainer}>
-              <Text style={styles.haveAccountText}>Already have an account?</Text>
-              <TouchableOpacity onPress={this.onLoginButtonPressed}>
-                <Text style={styles.loginText}>Login Now.</Text>
-              </TouchableOpacity>
             </View>
-          </View>
+
+          </Form>
+
         </Content>
       </Container>
     );

@@ -21,14 +21,14 @@ class Signup extends Component {
   state = {
     username: '',
     password: '',
-    confirmPassword: '',
+    phone_no: '',
   };
 
   // navigate to login screen after a successful signup
   onSignupButtonPressed = () => {
     // TODO: Login
 
-    this.props.navigation.navigate('Login');
+    this.props.navigation.navigate('OfficerInfo');
   }
 
   // navigate to login screen
@@ -46,7 +46,7 @@ class Signup extends Component {
               style={styles.logo}
               source={require('../../assets/images/icon.png')}
             />
-            <Text style={styles.logoText}>Crowdbotics</Text>
+            <Text style={styles.logoText}>OFFICER SIGNUP</Text>
           </View>
 
           {/* Form */}
@@ -84,12 +84,13 @@ class Signup extends Component {
             >
               <Input
                 style={styles.input}
-                placeholder="Confirm Password"
+                placeholder="Phone Number"
                 placeholderTextColor="#afb0d1"
-                onChangeText={confirmPassword => this.setState({ confirmPassword })}
-                secureTextEntry
+                onChangeText={phone_no => this.setState({ phone_no })}
+                
               />
             </Item>
+            
           </Form>
 
           <View style={styles.buttonContainer}>
@@ -103,7 +104,7 @@ class Signup extends Component {
               dark
               rounded
             >
-              <Text style={styles.signupText}>PROCE</Text>
+              <Text style={styles.signupText}>NEXT</Text>
             </Button>
 
             {/* Signup Button */}

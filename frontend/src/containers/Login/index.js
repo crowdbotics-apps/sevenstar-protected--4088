@@ -31,7 +31,7 @@ class Login extends Component {
 
   // navigate to signup screen
   onSignupButtonPressed = () => {
-    this.props.navigation.navigate('Signup');
+    this.props.navigation.navigate('ChooseRole');
   }
 
   // navigate to forgot password screen
