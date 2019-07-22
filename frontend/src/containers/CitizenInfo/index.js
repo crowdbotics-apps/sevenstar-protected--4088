@@ -25,18 +25,19 @@ class Signup extends Component {
         inches: '',
         weight: '',
         profile_image: '',
+        address:'',
+        city:'',
+        zip_code:'',
+        licence_number:'',
         image: null,
-        isDateTimePickerVisible: false
+        isDateTimePickerVisible: false,
+        formShow: 1
     };
 
     // navigate to login screen after a successful signup
-    onSignupButtonPressed = () => {
+    onNextButtonPressed = (form) => {
         // TODO: Login
-
-        this
-            .props
-            .navigation
-            .navigate('Login');
+        this.setState({formShow: form})
     }
 
     _showDateTimePicker = () => this.setState({isDateTimePickerVisible: true});
@@ -102,7 +103,9 @@ class Signup extends Component {
                     </View>
 
                     {this.stepForm1()}
-  
+                    {this.stepForm2()}
+                    {this.stepForm3()}
+
                     <DateTimePicker
                         isVisible={this.state.isDateTimePickerVisible}
                         onConfirm={this._handleDatePicked}
@@ -117,29 +120,32 @@ class Signup extends Component {
     }
 
     stepForm1() {
+        if (this.state.formShow !== 1) {
+            return
+        }
         return (
             <Form style={styles.form}>
 
                 <Text style={styles.subText}>STEP 1 of 3. PERSONAL INFO</Text>
-                <Item style={styles.item} rounded last>
+                <Item style={styles.item} last>
                     <Input
                         style={styles.input}
                         placeholder="First Name"
                         placeholderTextColor="#afb0d1"
-                        autoCapitalize="none"
+                        autoCapitalize="words"
                         onChangeText={first_name => this.setState({first_name})}/>
                 </Item>
 
-                <Item style={styles.item} rounded last>
+                <Item style={styles.item} last>
                     <Input
                         style={styles.input}
                         placeholder="Last Name"
                         placeholderTextColor="#afb0d1"
-                        autoCapitalize="none"
+                        autoCapitalize="words"
                         onChangeText={last_name => this.setState({last_name})}/>
                 </Item>
 
-                <Item style={styles.item} rounded last>
+                <Item style={styles.item} last>
                     <TouchableHighlight
                         activeOpacity={1}
                         underlayColor="#afb0d100"
@@ -171,6 +177,15 @@ class Signup extends Component {
                     </TouchableHighlight>
                 </Item>
 
+                <Item style={styles.item} last>
+                    <Input
+                        style={styles.input}
+                        placeholder="Weight"
+                        placeholderTextColor="#afb0d1"
+                        autoCapitalize="none"
+                        onChangeText={weight => this.setState({weight})}/>
+                </Item>
+
                 <Button
                     rounded
                     style={[
@@ -189,13 +204,123 @@ class Signup extends Component {
                 <View style={styles.buttonContainer}>
                     <Button
                         style={styles.button}
-                        onPress={this.onSignupButtonPressed}
+                        onPress={() => {
+                        this.onNextButtonPressed(2)
+                    }}
                         hasText
                         block
                         large
                         dark
                         rounded>
                         <Text style={styles.signupText}>NEXT</Text>
+                    </Button>
+                </View>
+
+            </Form>
+        )
+    }
+
+    stepForm2() {
+        if (this.state.formShow !== 2) {
+            return
+        }
+        return (
+            <Form style={styles.form}>
+
+                <Text style={styles.subText}>STEP 2 of 3. Address</Text>
+                <Item style={styles.item} last>
+                    <Input
+                        style={styles.input}
+                        placeholder="Street address"
+                        placeholderTextColor="#afb0d1"
+                        autoCapitalize="sentences"
+                        onChangeText={address => this.setState({address})}/>
+                </Item>
+
+                <Item style={styles.item} last>
+                    <Input
+                        style={styles.input}
+                        placeholder="City"
+                        placeholderTextColor="#afb0d1"
+                        autoCapitalize="words"
+                        onChangeText={city => this.setState({city})}/>
+                </Item>
+
+                <Item style={styles.item} last>
+                    <Input
+                        style={styles.input}
+                        placeholder="ZIP CODE"
+                        placeholderTextColor="#afb0d1"
+                        autoCapitalize="words"
+                        onChangeText={zip_code => this.setState({zip_code})}/>
+                </Item>
+                
+                <View style={styles.buttonContainer}>
+                    <Button
+                        style={styles.button}
+                        onPress={() => {
+                        this.onNextButtonPressed(3)
+                    }}
+                        hasText
+                        block
+                        large
+                        dark
+                        rounded>
+                        <Text style={styles.signupText}>NEXT</Text>
+                    </Button>
+                </View>
+
+            </Form>
+        )
+    }
+
+    stepForm3() {
+        if (this.state.formShow !== 3) {
+            return
+        }
+        return (
+            <Form style={styles.form}>
+
+                <Text style={styles.subText}>STEP 3 of 3. Drivers license</Text>
+                <Item style={styles.item} last>
+                    <Input
+                        style={styles.input}
+                        placeholder="Licence Number"
+                        placeholderTextColor="#afb0d1"
+                        autoCapitalize="none"
+                        onChangeText={licence_number => this.setState({licence_number})}/>
+                </Item>
+
+                <Button
+                    rounded
+                    style={[
+                    styles.input, {
+                        width: '100%',
+                        marginTop: 5,
+                        justifyContent: 'center',
+                        backgroundColor: '#121d56'
+                    }
+                ]}
+                    hasText
+                    onPress={this._pickImage}>
+                    <Text style={styles.signupText}>License photo</Text>
+                </Button>
+
+                <View style={styles.buttonContainer}>
+                    <Button
+                        style={styles.button}
+                        onPress={() => {
+                        this
+                            .props
+                            .navigation
+                            .navigate('Login');
+                    }}
+                        hasText
+                        block
+                        large
+                        dark
+                        rounded>
+                        <Text style={styles.signupText}>Complete</Text>
                     </Button>
                 </View>
 

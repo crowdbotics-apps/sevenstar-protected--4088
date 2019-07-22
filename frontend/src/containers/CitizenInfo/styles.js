@@ -34,6 +34,12 @@ const styles = StyleSheet.create({
     marginTop: PixelRatio.getPixelSizeForLayoutSize(10),
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(10),
   },
+  sub: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '700',
+    width:'100%',
+  },
   logo: {
     height: PixelRatio.getPixelSizeForLayoutSize(40),
     width: PixelRatio.getPixelSizeForLayoutSize(40),
