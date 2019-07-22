@@ -17,13 +17,22 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(40),
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(20),
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(15),
   },
   logoText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
+  },
+  subText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '700',
+    width:'100%',
+    textAlign:'center',
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(10),
+    marginBottom: PixelRatio.getPixelSizeForLayoutSize(10),
   },
   logo: {
     height: PixelRatio.getPixelSizeForLayoutSize(40),
