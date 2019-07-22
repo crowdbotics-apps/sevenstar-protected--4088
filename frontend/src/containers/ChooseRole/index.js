@@ -27,6 +27,9 @@ class ChooseRole extends Component {
     if(this.state.selected_role == 'officer'){
       this.props.navigation.navigate('OfficerSignUp');
     }
+    if(this.state.selected_role == 'citizen'){
+      this.props.navigation.navigate('CitizenSignUp');
+    }
     return;
     this.props.navigation.navigate('Signup');
   }

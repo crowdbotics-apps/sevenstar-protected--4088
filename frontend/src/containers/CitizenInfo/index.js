@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, TouchableHighlight, View} from 'react-native';
 import {
     Button,
     Container,
@@ -8,19 +8,25 @@ import {
     Item,
     Input,
     Text
+
 } from 'native-base';
 
 import styles from './styles';
 import {ImagePicker, Permissions, Constants} from 'expo';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 class Signup extends Component {
     state = {
         first_name: '',
         last_name: '',
-        department: '',
-        batch_no: '',
+        birthdate: '',
+        feets: '',
+        inches: '',
+        weight: '',
         profile_image: '',
-        image: null
+        image: null,
+        isDateTimePickerVisible: false
     };
 
     // navigate to login screen after a successful signup
@@ -32,6 +38,23 @@ class Signup extends Component {
             .navigation
             .navigate('Login');
     }
+
+    _showDateTimePicker = () => this.setState({isDateTimePickerVisible: true});
+
+    _hideDateTimePicker = () => this.setState({isDateTimePickerVisible: false});
+
+    _handleDatePicked = (date) => {
+        this._hideDateTimePicker();
+        this.setState({
+            date_of_birth: new Date(date)
+                .toISOString()
+                .replace(/T/, ' ')
+                .replace(/\..+/, '')
+        })
+        this.setState({
+            birthdate: new Date(date).toDateString()
+        })
+    };
 
     // navigate to login screen
     onLoginButtonPressed = () => {
@@ -96,26 +119,51 @@ class Signup extends Component {
                                 autoCapitalize="none"
                                 onChangeText={last_name => this.setState({last_name})}/>
                         </Item>
-                        
-                        <Item style={styles.item} rounded last>
-                            <Input
-                                style={styles.input}
-                                placeholder="Department"
-                                placeholderTextColor="#afb0d1"
-                                autoCapitalize="none"
-                                onChangeText={department => this.setState({department})}/>
-                        </Item>
 
                         <Item style={styles.item} rounded last>
-                            <Input
-                                style={styles.input}
-                                placeholder="Badge Number"
-                                placeholderTextColor="#afb0d1"
-                                autoCapitalize="none"
-                                onChangeText={batch_no => this.setState({batch_no})}/>
+                            <TouchableHighlight
+                                activeOpacity={1}
+                                underlayColor="#afb0d100"
+                                onPress={this
+                                ._showDateTimePicker
+                                .bind(this)}
+                                style={[{
+                                    height: 45,
+                                    width: "100%"
+                                }
+                            ]}>
+                                <View
+                                    pointerEvents={'none'}
+                                    style={[{
+                                        flex: 1,
+                                    }
+                                ]}>
+                                    <Input
+                                        value={this.state.birthdate}
+                                        style={styles.input}
+                                        placeholder="Date of Birth"
+                                        placeholderTextColor="#afb0d1"
+                                        returnKeyType="next"
+                                        editable={false}
+                                        onKeyPress={keyPress => console.log(keyPress)}
+                                        onFocus={() => this._showDateTimePicker.bind(this)}
+                                        selectTextOnFocus={false}/>
+                                </View>
+                            </TouchableHighlight>
                         </Item>
 
-                        <Button rounded style={[styles.input,{width:'100%',marginTop:5,justifyContent:'center',backgroundColor:'#121d56'}]} hasText onPress={this._pickImage}>
+                        <Button
+                            rounded
+                            style={[
+                            styles.input, {
+                                width: '100%',
+                                marginTop: 5,
+                                justifyContent: 'center',
+                                backgroundColor: '#121d56'
+                            }
+                        ]}
+                            hasText
+                            onPress={this._pickImage}>
                             <Text style={styles.signupText}>Upload your photo</Text>
                         </Button>
 
@@ -133,7 +181,14 @@ class Signup extends Component {
                         </View>
 
                     </Form>
-
+                    <DateTimePicker
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this._handleDatePicked}
+                        maximumDate={moment(new Date())
+                        .subtract(18, 'years')
+                        .toDate()}
+                        mode={'date'}
+                        onCancel={this._hideDateTimePicker}/>
                 </Content>
             </Container>
         );

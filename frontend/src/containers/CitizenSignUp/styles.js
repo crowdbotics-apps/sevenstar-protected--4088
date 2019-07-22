@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: PixelRatio.getPixelSizeForLayoutSize(40),
-    marginBottom: PixelRatio.getPixelSizeForLayoutSize(15),
+    marginBottom: PixelRatio.getPixelSizeForLayoutSize(40),
   },
   logoText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: '700',
   },
   logo: {

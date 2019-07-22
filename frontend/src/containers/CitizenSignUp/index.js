@@ -16,27 +16,24 @@ import {
 
 import styles from './styles';
 
-class Login extends Component {
+
+class Signup extends Component {
   state = {
     username: '',
     password: '',
+    phone_no: '',
   };
 
-  // navigate to home after a successful login
-  onLoginButtonPressed = () => {
+  // navigate to login screen after a successful signup
+  onSignupButtonPressed = () => {
     // TODO: Login
 
-    //this.props.navigation.navigate('Home');
+    this.props.navigation.navigate('CitizenInfo');
   }
 
-  // navigate to signup screen
-  onSignupButtonPressed = () => {
-    this.props.navigation.navigate('ChooseRole');
-  }
-
-  // navigate to forgot password screen
-  onForgotPasswordButtonPressed = () => {
-    this.props.navigation.navigate('ForgotPassword');
+  // navigate to login screen
+  onLoginButtonPressed = () => {
+    this.props.navigation.navigate('Login');
   }
 
   render() {
@@ -49,7 +46,7 @@ class Login extends Component {
               style={styles.logo}
               source={require('../../assets/images/icon.png')}
             />
-            <Text style={styles.logoText}>SevenStar App</Text>
+            <Text style={styles.logoText}>CITIZEN SIGNUP</Text>
           </View>
 
           {/* Form */}
@@ -80,33 +77,41 @@ class Login extends Component {
                 secureTextEntry
               />
             </Item>
+            <Item
+              style={styles.item}
+              rounded
+              last
+            >
+              <Input
+                style={styles.input}
+                placeholder="Phone Number"
+                placeholderTextColor="#afb0d1"
+                onChangeText={phone_no => this.setState({ phone_no })}
+                
+              />
+            </Item>
+            
           </Form>
 
           <View style={styles.buttonContainer}>
             {/* Login Button */}
             <Button
               style={styles.button}
-              onPress={this.onLoginButtonPressed}
+              onPress={this.onSignupButtonPressed}
               hasText
               block
               large
               dark
               rounded
             >
-              <Text style={styles.loginText}>LOGIN</Text>
+              <Text style={styles.signupText}>NEXT</Text>
             </Button>
 
-            <View style={styles.forgotPasswordContainer}>
-              <TouchableOpacity onPress={this.onForgotPasswordButtonPressed}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-
             {/* Signup Button */}
-            <View style={styles.signupContainer}>
-              <Text style={styles.dontHaveAccountText}>Don't have an account?</Text>
-              <TouchableOpacity onPress={this.onSignupButtonPressed}>
-                <Text style={styles.signupText}>Sign Up Now.</Text>
+            <View style={styles.loginContainer}>
+              <Text style={styles.haveAccountText}>Already have an account?</Text>
+              <TouchableOpacity onPress={this.onLoginButtonPressed}>
+                <Text style={styles.loginText}>Login Now.</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -116,4 +121,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Signup;
