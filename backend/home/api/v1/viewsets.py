@@ -21,14 +21,12 @@ class PasswordResetAPI(APIView):
         email = request.data.get('email')
         request = HttpRequest()
         request.method = 'POST'
-
-        print(email)
+        print(request.get_full_path())
         # add the absolute url to be be included in email
         if settings.DEBUG:
             request.META['HTTP_HOST'] = '127.0.0.1:8000'
         else:
-            request.META['HTTP_HOST'] = 'www.mysite.com'
-
+            request.META['HTTP_HOST'] = 'https://severstar-backend.herokuapp.com'
         # pass the post form data
         request.POST = {
             'email': email,
