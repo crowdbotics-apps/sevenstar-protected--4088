@@ -168,9 +168,10 @@ if DEBUG:
     # output email to console instead of sending
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = env.str('SENDGRID_USERNAME', '')
-EMAIL_HOST_PASSWORD = env.str('SENDGRID_PASSWORD', '')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = env.str('SENDGRID_USERNAME', 'shabeebhasan@googlemail.com')
+EMAIL_HOST_PASSWORD = env.str('SENDGRID_PASSWORD', 'pgxuevbdqtcfgyjc')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

@@ -7,14 +7,35 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from allauth.account.views import PasswordResetView
+from django.http import HttpRequest
+from django.middleware.csrf import get_token
+from django.conf import settings
+
 from home.api.v1.serializers import AppCitizenSignupSerializer,AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
 from home.models import CustomText, HomePage
 
 
-class CitizenView(APIView):
+class PasswordResetAPI(APIView):
     def post(self, request):
-        data = request.data.get('data')
-        return Response({"response": "success"})
+        email = request.data.get('email')
+        request = HttpRequest()
+        request.method = 'POST'
+
+        print(email)
+        # add the absolute url to be be included in email
+        if settings.DEBUG:
+            request.META['HTTP_HOST'] = '127.0.0.1:8000'
+        else:
+            request.META['HTTP_HOST'] = 'www.mysite.com'
+
+        # pass the post form data
+        request.POST = {
+            'email': email,
+            'csrfmiddlewaretoken': get_token(HttpRequest())
+        }
+        PasswordResetView.as_view()(request)
+        return Response({"response": "reset link has been send to email.."})
 
 class OfficerView(APIView):
     def post(self, request):
