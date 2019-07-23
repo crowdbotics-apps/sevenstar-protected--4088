@@ -8,6 +8,7 @@ import OfficerSignUp from '../containers/OfficerSignUp';
 import OfficerInfo from '../containers/OfficerInfo';
 import CitizenSignUp from '../containers/CitizenSignUp';
 import CitizenInfo from '../containers/CitizenInfo';
+import SignUpComplete from '../containers/SignUpComplete';
 
 
 const AuthNavigator = createStackNavigator({
@@ -25,6 +26,12 @@ const AuthNavigator = createStackNavigator({
   },
   OfficerSignUp: {
     screen: OfficerSignUp,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  SignUpComplete: {
+    screen: SignUpComplete,
     navigationOptions: {
       header: null,
     },

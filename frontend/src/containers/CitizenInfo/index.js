@@ -309,7 +309,7 @@ class Signup extends Component {
                         this
                             .props
                             .navigation
-                            .navigate('Login');
+                            .navigate('SignUpComplete');
                     }}
                         hasText
                         block
