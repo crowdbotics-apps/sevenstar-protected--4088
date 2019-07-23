@@ -44,7 +44,7 @@ class Signup extends Component {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require('../../assets/images/icon.png')}
+              source={require('../../assets/images/logo.png')}
             />
             <Text style={styles.logoText}>CITIZEN SIGNUP</Text>
           </View>
@@ -53,7 +53,6 @@ class Signup extends Component {
           <Form style={styles.form}>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -66,7 +65,6 @@ class Signup extends Component {
             </Item>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -79,7 +77,6 @@ class Signup extends Component {
             </Item>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -102,7 +99,6 @@ class Signup extends Component {
               block
               large
               dark
-              rounded
             >
               <Text style={styles.signupText}>NEXT</Text>
             </Button>

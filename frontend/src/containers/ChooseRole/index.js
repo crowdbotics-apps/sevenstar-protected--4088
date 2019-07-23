@@ -52,7 +52,7 @@ class ChooseRole extends Component {
           <View style={styles.logoContainer}>
             <Image
               style={styles.logo}
-              source={require('../../assets/images/icon.png')}
+              source={require('../../assets/images/logo.png')}
             />
             <Text style={styles.logoText}>Choose Your Role</Text>
           </View>
@@ -61,7 +61,7 @@ class ChooseRole extends Component {
           <Form style={styles.form}>
             
             <Button
-              style={[styles.button,{height:80, backgroundColor:this.state.selected_role == 'officer' ? "#7646e480":"#7646e4"}]}
+              style={[styles.button,{borderColor:'transparent',height:80, backgroundColor:this.state.selected_role == 'officer' ? "#7646e480":"#7646e4"}]}
               onPress={()=>{this.onRolesButtonPressed("officer")}}
               hasText
               block
@@ -71,7 +71,7 @@ class ChooseRole extends Component {
             </Button>
 
             <Button
-              style={[styles.button,{height:80,backgroundColor:this.state.selected_role == 'citizen' ? "#7646e480":"#7646e4"}]}
+              style={[styles.button,{borderColor:'transparent',height:80,backgroundColor:this.state.selected_role == 'citizen' ? "#7646e480":"#7646e4"}]}
               onPress={()=>{this.onRolesButtonPressed("citizen")}}
               hasText
               block
@@ -91,7 +91,6 @@ class ChooseRole extends Component {
               block
               large
               dark
-              rounded
             >
               <Text style={styles.sendText}>PROCEED</Text>
             </Button>
