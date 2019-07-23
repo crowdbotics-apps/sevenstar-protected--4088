@@ -74,12 +74,13 @@ class Signup extends Component {
                 <Content contentContainerStyle={styles.content}>
                     {/* Logo */}
                     <View style={styles.logoContainer}>
+                        <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
                         <Text style={styles.logoText}>Please, fill out the form</Text>
                     </View>
 
                     {/* Form */}
                     <Form style={styles.form}>
-                        <Item style={styles.item} rounded last>
+                        <Item style={styles.item} last>
                             <Input
                                 style={styles.input}
                                 placeholder="First Name"
@@ -88,7 +89,7 @@ class Signup extends Component {
                                 onChangeText={first_name => this.setState({first_name})}/>
                         </Item>
 
-                        <Item style={styles.item} rounded last>
+                        <Item style={styles.item} last>
                             <Input
                                 style={styles.input}
                                 placeholder="Last Name"
@@ -96,8 +97,8 @@ class Signup extends Component {
                                 autoCapitalize="none"
                                 onChangeText={last_name => this.setState({last_name})}/>
                         </Item>
-                        
-                        <Item style={styles.item} rounded last>
+
+                        <Item style={styles.item} last>
                             <Input
                                 style={styles.input}
                                 placeholder="Department"
@@ -106,7 +107,7 @@ class Signup extends Component {
                                 onChangeText={department => this.setState({department})}/>
                         </Item>
 
-                        <Item style={styles.item} rounded last>
+                        <Item style={styles.item} last>
                             <Input
                                 style={styles.input}
                                 placeholder="Badge Number"
@@ -115,7 +116,17 @@ class Signup extends Component {
                                 onChangeText={batch_no => this.setState({batch_no})}/>
                         </Item>
 
-                        <Button rounded style={[styles.input,{width:'100%',marginTop:5,justifyContent:'center',backgroundColor:'#121d56'}]} hasText onPress={this._pickImage}>
+                        <Button
+                            style={[
+                            styles.input, {
+                                width: '100%',
+                                marginTop: 5,
+                                justifyContent: 'center',
+                                backgroundColor: '#121d56'
+                            }
+                        ]}
+                            hasText
+                            onPress={this._pickImage}>
                             <Text style={styles.signupText}>Upload your photo</Text>
                         </Button>
 
@@ -126,8 +137,7 @@ class Signup extends Component {
                                 hasText
                                 block
                                 large
-                                dark
-                                rounded>
+                                dark>
                                 <Text style={styles.signupText}>COMPLETE</Text>
                             </Button>
                         </View>

@@ -7,7 +7,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1142',
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
@@ -17,17 +17,17 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(40),
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(20),
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(15),
   },
   logoText: {
-    color: 'white',
+    color: '#333',
     fontSize: 16,
     fontWeight: '700',
   },
   logo: {
-    height: PixelRatio.getPixelSizeForLayoutSize(40),
-    width: PixelRatio.getPixelSizeForLayoutSize(40),
+    height: PixelRatio.getPixelSizeForLayoutSize(80),
+    width: "100%",
     resizeMode: 'contain',
   },
   form: {
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
   },
   item: {
     marginVertical: PixelRatio.getPixelSizeForLayoutSize(2),
-    backgroundColor: '#121d56',
-    borderColor: '#121d56',
+    backgroundColor: '#fff',
+    borderColor: '#000',
   },
   input: {
-    color: 'white',
+    color: '#333',
   },
   buttonContainer: {
     flex: 1,
@@ -48,7 +48,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: PixelRatio.getPixelSizeForLayoutSize(2),
-    backgroundColor: '#7646e4',
+    backgroundColor: '#E71E3C',
+    borderColor:"#B71F30",
+    borderWidth:2
   },
   signupText: {
     color: 'white',
