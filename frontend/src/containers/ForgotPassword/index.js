@@ -50,7 +50,6 @@ class Login extends Component {
           <Form style={styles.form}>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -75,7 +74,6 @@ class Login extends Component {
               block
               large
               dark
-              rounded
             >
               <Text style={styles.sendText}>SEND</Text>
             </Button>
