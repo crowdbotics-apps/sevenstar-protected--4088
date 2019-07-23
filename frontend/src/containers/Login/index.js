@@ -49,14 +49,12 @@ class Login extends Component {
               style={styles.logo}
               source={require('../../assets/images/icon.png')}
             />
-            <Text style={styles.logoText}>SevenStar App</Text>
           </View>
 
           {/* Form */}
           <Form style={styles.form}>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -69,7 +67,6 @@ class Login extends Component {
             </Item>
             <Item
               style={styles.item}
-              rounded
               last
             >
               <Input
@@ -91,7 +88,6 @@ class Login extends Component {
               block
               large
               dark
-              rounded
             >
               <Text style={styles.loginText}>LOGIN</Text>
             </Button>
@@ -104,9 +100,9 @@ class Login extends Component {
 
             {/* Signup Button */}
             <View style={styles.signupContainer}>
-              <Text style={styles.dontHaveAccountText}>Don't have an account?</Text>
+              <Text style={styles.dontHaveAccountText}>Don't have an account yet?</Text>
               <TouchableOpacity onPress={this.onSignupButtonPressed}>
-                <Text style={styles.signupText}>Sign Up Now.</Text>
+                <Text style={styles.signupText}>Sign Up here.</Text>
               </TouchableOpacity>
             </View>
           </View>
