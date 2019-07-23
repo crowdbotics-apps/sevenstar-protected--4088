@@ -35,6 +35,12 @@ class PasswordResetAPI(APIView):
         PasswordResetView.as_view()(request)
         return Response({"response": "reset link has been send to email.."})
 
+class ImageUploadAPI(APIView):
+    def post(self, request):
+        image = request.data.get('image')
+        print(image)
+        return Response({"response": "Image File Name"})
+
 class OfficerView(APIView):
     def post(self, request):
         return Response({"response": "success"})

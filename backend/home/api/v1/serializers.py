@@ -54,7 +54,7 @@ class AppOfficerSignupSerializer(serializers.Serializer):
     success = serializers.BooleanField(required=False)
     officer_batch_no = serializers.CharField(write_only=True,max_length=50)
     officer_department = serializers.CharField(write_only=True,max_length=100)
-    profile_image = serializers.CharField(write_only=True,max_length=100)
+    profile_image = serializers.ImageField(write_only=True)
 
     def create(self, validated_data):
         if validated_data.get('username') is None:
@@ -112,8 +112,8 @@ class AppCitizenSignupSerializer(serializers.Serializer):
     zip_code = serializers.CharField(max_length=100)
     city = serializers.CharField(max_length=100)
     driver_licence_no = serializers.CharField(max_length=50)
-    licence_photo = serializers.CharField(max_length=100)
-    profile_image = serializers.CharField(max_length=100)
+    licence_photo = serializers.ImageField(write_only=True)
+    profile_image = serializers.ImageField(write_only=True)
     success_message = serializers.CharField(required=False)
     success = serializers.BooleanField(required=False)
 
@@ -148,7 +148,7 @@ class AppCitizenSignupSerializer(serializers.Serializer):
            state=validated_data.get('state'),
            city=validated_data.get('city'),
            driver_licence_no=validated_data.get('driver_licence_no'),
-           licence_photo=validated_data.get('driver_licence_no'),
+           licence_photo=validated_data.get('licence_photo'),
            profile_image=validated_data.get('profile_image'),
         )  
 
