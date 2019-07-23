@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: PixelRatio.getPixelSizeForLayoutSize(20),
-    marginBottom: PixelRatio.getPixelSizeForLayoutSize(15),
+    marginBottom: PixelRatio.getPixelSizeForLayoutSize(5),
   },
   logoText: {
     color: '#333',

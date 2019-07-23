@@ -7,7 +7,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0a1142',
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(15),
   },
   logoText: {
-    color: 'white',
+    color: '#333',
     fontSize: 18,
     fontWeight: '700',
   },
   subText: {
-    color: 'white',
+    color: '#333',
     fontSize: 20,
     fontWeight: '700',
     width:'100%',
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
   },
   item: {
     marginVertical: PixelRatio.getPixelSizeForLayoutSize(2),
-    backgroundColor: '#121d56',
-    borderColor: '#121d56',
+    backgroundColor: '#fff',
+    borderColor: '#000',
   },
   input: {
-    color: 'white',
+    color: '#333',
   },
   buttonContainer: {
     flex: 1,
@@ -63,7 +63,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: PixelRatio.getPixelSizeForLayoutSize(2),
-    backgroundColor: '#7646e4',
+    backgroundColor: '#E71E3C',
+    borderColor:"#B71F30",
+    borderWidth:2
   },
   signupText: {
     color: 'white',

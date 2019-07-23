@@ -25,10 +25,10 @@ class Signup extends Component {
         inches: '',
         weight: '',
         profile_image: '',
-        address:'',
-        city:'',
-        zip_code:'',
-        licence_number:'',
+        address: '',
+        city: '',
+        zip_code: '',
+        licence_number: '',
         image: null,
         isDateTimePickerVisible: false,
         formShow: 1
@@ -187,7 +187,6 @@ class Signup extends Component {
                 </Item>
 
                 <Button
-                    rounded
                     style={[
                     styles.input, {
                         width: '100%',
@@ -210,8 +209,7 @@ class Signup extends Component {
                         hasText
                         block
                         large
-                        dark
-                        rounded>
+                        dark>
                         <Text style={styles.signupText}>NEXT</Text>
                     </Button>
                 </View>
@@ -254,7 +252,7 @@ class Signup extends Component {
                         autoCapitalize="words"
                         onChangeText={zip_code => this.setState({zip_code})}/>
                 </Item>
-                
+
                 <View style={styles.buttonContainer}>
                     <Button
                         style={styles.button}
@@ -264,8 +262,7 @@ class Signup extends Component {
                         hasText
                         block
                         large
-                        dark
-                        rounded>
+                        dark>
                         <Text style={styles.signupText}>NEXT</Text>
                     </Button>
                 </View>
@@ -292,7 +289,6 @@ class Signup extends Component {
                 </Item>
 
                 <Button
-                    rounded
                     style={[
                     styles.input, {
                         width: '100%',
@@ -318,8 +314,7 @@ class Signup extends Component {
                         hasText
                         block
                         large
-                        dark
-                        rounded>
+                        dark>
                         <Text style={styles.signupText}>Complete</Text>
                     </Button>
                 </View>
