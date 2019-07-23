@@ -61,7 +61,7 @@ class ChooseRole extends Component {
           <Form style={styles.form}>
             
             <Button
-              style={[styles.button,{borderColor:'transparent',height:80, backgroundColor:this.state.selected_role == 'officer' ? "#7646e480":"#7646e4"}]}
+              style={[styles.button,{borderColor:'transparent',height:80, backgroundColor:this.state.selected_role == 'officer' ? "#2BA4DD80":"#2BA4DD"}]}
               onPress={()=>{this.onRolesButtonPressed("officer")}}
               hasText
               block
@@ -71,7 +71,7 @@ class ChooseRole extends Component {
             </Button>
 
             <Button
-              style={[styles.button,{borderColor:'transparent',height:80,backgroundColor:this.state.selected_role == 'citizen' ? "#7646e480":"#7646e4"}]}
+              style={[styles.button,{borderColor:'transparent',height:80,backgroundColor:this.state.selected_role == 'citizen' ? "#2BA4DD80":"#2BA4DD"}]}
               onPress={()=>{this.onRolesButtonPressed("citizen")}}
               hasText
               block

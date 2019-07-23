@@ -11,10 +11,77 @@ import {
 
 } from 'native-base';
 
+import constants from '../../constants';
 import styles from './styles';
 import {ImagePicker, Permissions, Constants} from 'expo';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import ModalSelector from 'react-native-modal-selector'
+
+const inches = [
+    {
+        key: "1",
+        label: "1"
+    }, {
+        key: "2",
+        label: "2"
+    }, {
+        key: "3",
+        label: "3"
+    }, {
+        key: "4",
+        label: "4"
+    }, {
+        key: "5",
+        label: "5"
+    }, {
+        key: "6",
+        label: "6"
+    }, {
+        key: "8",
+        label: "8"
+    }, {
+        key: "9",
+        label: "9"
+    }, {
+        key: "10",
+        label: "10"
+    }, {
+        key: "11",
+        label: "11"
+    }, {
+        key: "12",
+        label: "12"
+    }
+]
+
+const feets = [
+    {
+        key: "1",
+        label: "1"
+    }, {
+        key: "2",
+        label: "2"
+    }, {
+        key: "3",
+        label: "3"
+    }, {
+        key: "4",
+        label: "4"
+    }, {
+        key: "5",
+        label: "5"
+    }, {
+        key: "6",
+        label: "6"
+    }, {
+        key: "7",
+        label: "7"
+    }, {
+        key: "8",
+        label: "8"
+    }
+]
 
 class Signup extends Component {
     state = {
@@ -180,10 +247,47 @@ class Signup extends Component {
                 <Item style={styles.item} last>
                     <Input
                         style={styles.input}
-                        placeholder="Weight"
+                        placeholder="Weight in KG"
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="none"
                         onChangeText={weight => this.setState({weight})}/>
+                </Item>
+
+                <Item
+                    style={[
+                    styles.item, {
+                        borderWidth: 0,
+                        flexDirection: 'row'
+                    }
+                ]}
+                    last>
+                    <Text
+                        style={{
+                        fontSize: 14,
+                        color: "#333"
+                    }}>Height:</Text>
+                    <ModalSelector
+                        style={[{
+                            width: 100,
+                            margin: 5
+                        }
+                    ]}
+                        data={feets}
+                        initValue="Feet"
+                        onChange={(option) => {
+                        this.setState({feets: option.key})
+                    }}/>
+                    <ModalSelector
+                        style={[{
+                            width: 100,
+                            margin: 5
+                        }
+                    ]}
+                        data={inches}
+                        initValue="INCH"
+                        onChange={(option) => {
+                        this.setState({inches: option.key})
+                    }}/>
                 </Item>
 
                 <Button
@@ -192,7 +296,7 @@ class Signup extends Component {
                         width: '100%',
                         marginTop: 5,
                         justifyContent: 'center',
-                        backgroundColor: '#121d56'
+                        backgroundColor: '#2BA4DD'
                     }
                 ]}
                     hasText
@@ -253,6 +357,21 @@ class Signup extends Component {
                         onChangeText={zip_code => this.setState({zip_code})}/>
                 </Item>
 
+                <View style={styles.item} last>
+                    <ModalSelector
+                        style={[{
+                            width: "100%",
+                            marginTop: 5,
+                            height:40
+                        }
+                    ]}
+                        data={constants.USA_STATES}
+                        initValue="Select State"
+                        onChange={(option) => {
+                        this.setState({state: option.key})
+                    }}/>
+                </View>
+
                 <View style={styles.buttonContainer}>
                     <Button
                         style={styles.button}
@@ -294,7 +413,7 @@ class Signup extends Component {
                         width: '100%',
                         marginTop: 5,
                         justifyContent: 'center',
-                        backgroundColor: '#121d56'
+                        backgroundColor: '#2BA4DD'
                     }
                 ]}
                     hasText

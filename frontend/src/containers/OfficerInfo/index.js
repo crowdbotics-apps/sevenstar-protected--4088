@@ -122,7 +122,7 @@ class Signup extends Component {
                                 width: '100%',
                                 marginTop: 5,
                                 justifyContent: 'center',
-                                backgroundColor: '#121d56'
+                                backgroundColor: '#2BA4DD'
                             }
                         ]}
                             hasText
