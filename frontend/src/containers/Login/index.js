@@ -69,7 +69,7 @@ class Login extends Component {
                     .navigation
                     .navigate('Home');
             } else {
-                this.showAlert("Login!", 'Invalid Credentials..')
+                this.showAlert("Login!", resp.non_field_errors)
             }
         }).catch((ex) => {
 

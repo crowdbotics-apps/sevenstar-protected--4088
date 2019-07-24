@@ -4,9 +4,12 @@ import {
   applyMiddleware,
 } from 'redux';
 import thunk from 'redux-thunk';
+import { StatusBar,AsyncStorage } from 'react-native';
 import { middleware } from '../navigators/AppNavigator';
 
 import reducers from './reducers';
+import {persistReducer} from 'redux-persist'
+import storage from 'redux-persist/lib/storage';
 
 
 // redux debugging
@@ -15,6 +18,13 @@ if (__DEV__) {
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 }
 
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk, middleware)));
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  //blacklist: ['auth','nav']
+}
+const persistedReducer = persistReducer(persistConfig, reducers)
+const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk, middleware)));
 
 export default store;
