@@ -17,6 +17,10 @@ import {ImagePicker, Permissions, Constants} from 'expo';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import ModalSelector from 'react-native-modal-selector'
+import BaseScreen from '../BaseScreen';
+import {showMessage, hideMessage} from "react-native-flash-message";
+import validate from 'validate.js';
+import {Ionicons} from '@expo/vector-icons';
 
 const inches = [
     {
@@ -86,6 +90,44 @@ const feets = [
     }
 ]
 
+var constraintsForm1 = {
+    first_name: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    last_name: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    birthdate: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    inches: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    feets: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    }
+};
+
 class Signup extends Component {
     state = {
         first_name: '',
@@ -101,13 +143,98 @@ class Signup extends Component {
         licence_number: '',
         image: null,
         isDateTimePickerVisible: false,
-        formShow: 1
+        formShow: 1,
+        loading: false
     };
 
     // navigate to login screen after a successful signup
     onNextButtonPressed = (form) => {
+
+        if (form == 2) {
+            if (!this.validateForm1()) {
+                return;
+            }
+        }
+
+        if (form == 3) {
+            if (!this.validateForm2()) {
+                return;
+            }
+        }
         // TODO: Login
         this.setState({formShow: form})
+    }
+
+    validateForm1() {
+        const {first_name, last_name, birthdate, inches, feets} = this.state;
+        let errors = validate({
+            first_name: first_name,
+            last_name: last_name,
+            birthdate: birthdate,
+            feets: feets,
+            inches: inches
+        }, constraintsForm1);
+
+        if (errors) {
+            console.log("onSignupButtonPressed errors:: ", errors);
+            if (errors.first_name) {
+                showMessage({message: errors.first_name[0], type: "error"});
+                return false;
+            }
+            if (errors.last_name) {
+                showMessage({message: errors.last_name[0], type: "error"});
+                return false;
+            }
+            if (errors.birthdate) {
+                showMessage({message: errors.birthdate[0], type: "error"});
+                return false;
+            }
+            if (errors.feets) {
+                showMessage({message: errors.feets[0], type: "error"});
+                return false;
+            }
+            if (errors.feets) {
+                showMessage({message: errors.inches[0], type: "error"});
+                return false;
+            }
+        }
+        return true;
+    }
+
+    validateForm2() {
+        const {first_name, last_name, birthdate, inches, feets} = this.state;
+        let errors = validate({
+            first_name: first_name,
+            last_name: last_name,
+            birthdate: birthdate,
+            feets: feets,
+            inches: inches
+        }, constraintsForm1);
+
+        if (errors) {
+            console.log("onSignupButtonPressed errors:: ", errors);
+            if (errors.first_name) {
+                showMessage({message: errors.first_name[0], type: "error"});
+                return false;
+            }
+            if (errors.last_name) {
+                showMessage({message: errors.last_name[0], type: "error"});
+                return false;
+            }
+            if (errors.birthdate) {
+                showMessage({message: errors.birthdate[0], type: "error"});
+                return false;
+            }
+            if (errors.feets) {
+                showMessage({message: errors.feets[0], type: "error"});
+                return false;
+            }
+            if (errors.feets) {
+                showMessage({message: errors.inches[0], type: "error"});
+                return false;
+            }
+        }
+        return true;
     }
 
     _showDateTimePicker = () => this.setState({isDateTimePickerVisible: true});
@@ -164,28 +291,54 @@ class Signup extends Component {
     render() {
         let {image} = this.state;
         return (
-            <Container style={styles.container}>
-                <Content contentContainerStyle={styles.content}>
-                    {/* Logo */}
-                    <View style={styles.logoContainer}>
-                        <Text style={styles.logoText}>Please, fill out the form</Text>
-                        <Text style={styles.logoText}>as you have it in your driver's license</Text>
-                    </View>
+            <BaseScreen
+                style={{
+                flex: 1
+            }}
+                loading={this.state.loading}>
+                <Container style={styles.container}>
+                    <Content contentContainerStyle={styles.content}>
+                        <TouchableOpacity
+                            onPress={() => {
+                            this
+                                .props
+                                .navigation
+                                .replace('CitizenSignUp');
+                        }}
+                            style={{
+                            width: 50,
+                            height: 30,
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Ionicons name="ios-arrow-back" size={25} color="#333"/>
+                            <Text
+                                style={{
+                                color: '#333',
+                                marginStart: 5
+                            }}>Back</Text>
+                        </TouchableOpacity>
+                        {/* Logo */}
+                        <View style={styles.logoContainer}>
+                            <Text style={styles.logoText}>Please, fill out the form</Text>
+                            <Text style={styles.logoText}>as you have it in your driver's license</Text>
+                        </View>
 
-                    {this.stepForm1()}
-                    {this.stepForm2()}
-                    {this.stepForm3()}
+                        {this.stepForm1()}
+                        {this.stepForm2()}
+                        {this.stepForm3()}
 
-                    <DateTimePicker
-                        isVisible={this.state.isDateTimePickerVisible}
-                        onConfirm={this._handleDatePicked}
-                        maximumDate={moment(new Date())
-                        .subtract(18, 'years')
-                        .toDate()}
-                        mode={'date'}
-                        onCancel={this._hideDateTimePicker}/>
-                </Content>
-            </Container>
+                        <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this._handleDatePicked}
+                            maximumDate={moment(new Date())
+                            .subtract(18, 'years')
+                            .toDate()}
+                            mode={'date'}
+                            onCancel={this._hideDateTimePicker}/>
+                    </Content>
+                </Container>
+            </BaseScreen>
         );
     }
 
