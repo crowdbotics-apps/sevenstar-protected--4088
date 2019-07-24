@@ -4,7 +4,7 @@
 export default {
   // will use depending on the mode
   API_URL: {
-    DEV: '',
+    DEV: 'https://severstar-backend.herokuapp.com',
     PROD: '',
   },
 };
