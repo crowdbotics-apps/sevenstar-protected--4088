@@ -532,6 +532,7 @@ class Signup extends Component {
                     ]}
                         data={feets}
                         initValue="Feet"
+                        value={this.state.feets}
                         onChange={(option) => {
                         this.setState({feets: option.key})
                     }}/>
@@ -543,6 +544,7 @@ class Signup extends Component {
                     ]}
                         data={inches}
                         initValue="INCH"
+                        value={this.state.inches}
                         onChange={(option) => {
                         this.setState({inches: option.key})
                     }}/>
@@ -594,6 +596,7 @@ class Signup extends Component {
                         placeholder="Street address"
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="sentences"
+                        value={this.state.address}
                         onSubmitEditing={() => {
                           this.cityInput._root.focus();
                         }}
@@ -610,6 +613,7 @@ class Signup extends Component {
                         onSubmitEditing={() => {
                           this.zip_codeInput._root.focus();
                         }}
+                        value={this.state.city}
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
                         onChangeText={city => this.setState({city})}/>
@@ -622,6 +626,7 @@ class Signup extends Component {
                         ref={input => {
                           this.zip_codeInput = input;
                         }}
+                        value={this.state.zip_code}
                         keyboardType={"number-pad"}
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
@@ -637,6 +642,7 @@ class Signup extends Component {
                         }
                     ]}
                         data={constants.USA_STATES}
+                        value={this.state.state}
                         initValue="Select State"
                         onChange={(option) => {
                         this.setState({state: option.key})
@@ -675,6 +681,7 @@ class Signup extends Component {
                         placeholder="Licence Number"
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="none"
+                        value={this.state.licence_number}
                         onChangeText={licence_number => this.setState({licence_number})}/>
                 </Item>
 

@@ -130,6 +130,7 @@ class Signup extends Component {
                                     placeholder="Username"
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="none"
+                                    value={this.state.username}
                                     onSubmitEditing={() => {
                                     this
                                         .passwordInput
@@ -143,6 +144,7 @@ class Signup extends Component {
                                     style={styles.input}
                                     placeholder="Password"
                                     placeholderTextColor="#afb0d1"
+                                    value={this.state.password}
                                     onSubmitEditing={() => {
                                     this
                                         .phone_noInput
@@ -159,7 +161,8 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Phone Number"
-                                    keyboardType={"number-pad"}
+                                    keyboardType={"phone-pad"}
+                                    value={this.state.phone_no}
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={this.onSignupButtonPressed}
                                     ref={input => {

@@ -159,7 +159,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Phone Number"
-                                    keyboardType={"number-pad"}
+                                    keyboardType={"phone-pad"}
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={this.onSignupButtonPressed}
                                     ref={input => {

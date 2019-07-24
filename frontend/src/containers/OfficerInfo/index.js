@@ -171,6 +171,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="First Name"
+                                    value={this.state.first_name}
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     onSubmitEditing={() => {
@@ -183,6 +184,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Last Name"
+                                    value={this.state.last_name}
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     ref={input => {
@@ -198,6 +200,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Department"
+                                    value={this.state.department}
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     ref={input => {
@@ -213,6 +216,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Badge Number"
+                                    value={this.state.batch_no}
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="none"
                                     keyboardType={"number-pad"}
