@@ -20,6 +20,9 @@ import ModalSelector from 'react-native-modal-selector'
 
 const inches = [
     {
+        key: "0",
+        label: "0"
+    }, {
         key: "1",
         label: "1"
     }, {
@@ -362,7 +365,7 @@ class Signup extends Component {
                         style={[{
                             width: "100%",
                             marginTop: 5,
-                            height:40
+                            height: 40
                         }
                     ]}
                         data={constants.USA_STATES}

@@ -1,115 +1,182 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {Image, TouchableOpacity, View, Alert} from 'react-native';
 import {
-  Image,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  Button,
-  Container,
-  Content,
-  Form,
-  Item,
-  Input,
-  Text,
+    Button,
+    Container,
+    Content,
+    Form,
+    Item,
+    Input,
+    Text
 } from 'native-base';
 
+import validate from 'validate.js';
 import styles from './styles';
+import BaseScreen from '../BaseScreen';
+import {showMessage, hideMessage} from "react-native-flash-message";
+import {loginAPI} from '../../services/Authentication';
+
+var constraints = {
+    username: {
+        presence: true,
+        email: {
+            message: 'is not valid.'
+        }
+    },
+    password: {
+        presence: true,
+        length: {
+            minimum: 4,
+            message: "must be at least 4 characters"
+        }
+    }
+};
 
 class Login extends Component {
-  state = {
-    username: '',
-    password: '',
-  };
+    state = {
+        username: '',
+        password: '',
+        loading: false
+    };
 
-  // navigate to home after a successful login
-  onLoginButtonPressed = () => {
-    // TODO: Login
+    // navigate to home after a successful login
+    onLoginButtonPressed = () => {
+        const {username, password} = this.state;
+        let errors = validate({
+            username: username,
+            password: password
+        }, constraints);
 
-    //this.props.navigation.navigate('Home');
-  }
+        if (errors) {
+            console.log("onLoginPress errors:: ", errors);
+            if (errors.username) {
+                showMessage({message: errors.username[0], type: "error"});
+                return;
+            }
+            if (errors.password) {
+                showMessage({message: errors.password[0], type: "error"});
+                return;
+            }
+        }
+        
+        this.setState({loading: true});
+        loginAPI(username, password).then((resp) => {
+            console.log(resp);
+            this.setState({loading: false});
+            if (resp.token) {
+                this
+                    .props
+                    .navigation
+                    .navigate('Home');
+            } else {
+                this.showAlert("Login!", 'Invalid Credentials..')
+            }
+        }).catch((ex) => {
 
-  // navigate to signup screen
-  onSignupButtonPressed = () => {
-    this.props.navigation.navigate('ChooseRole');
-  }
+            this.showAlert("Login!", 'Invalid Credentials..')
+            this.setState({loading: false});
+        });
+    }
 
-  // navigate to forgot password screen
-  onForgotPasswordButtonPressed = () => {
-    this.props.navigation.navigate('ForgotPassword');
-  }
+    showAlert(title, message) {
+        Alert.alert(title, message, [
+            {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+            }
+        ], {cancelable: false})
+    }
 
-  render() {
-    return (
-      <Container style={styles.container}>
-        <Content contentContainerStyle={styles.content}>
-          {/* Logo */}
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.logo}
-              source={require('../../assets/images/logo.png')}
-            />
-          </View>
+    // navigate to signup screen
+    onSignupButtonPressed = () => {
+        this
+            .props
+            .navigation
+            .navigate('ChooseRole');
+    }
 
-          {/* Form */}
-          <Form style={styles.form}>
-            <Item
-              style={styles.item}
-              last
-            >
-              <Input
-                style={styles.input}
-                placeholder="Username"
-                placeholderTextColor="#afb0d1"
-                autoCapitalize="none"
-                onChangeText={username => this.setState({ username })}
-              />
-            </Item>
-            <Item
-              style={styles.item}
-              last
-            >
-              <Input
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#afb0d1"
-                onChangeText={password => this.setState({ password })}
-                secureTextEntry
-              />
-            </Item>
-          </Form>
+    // navigate to forgot password screen
+    onForgotPasswordButtonPressed = () => {
+        this
+            .props
+            .navigation
+            .navigate('ForgotPassword');
+    }
 
-          <View style={styles.buttonContainer}>
-            {/* Login Button */}
-            <Button
-              style={styles.button}
-              onPress={this.onLoginButtonPressed}
-              hasText
-              block
-              large
-              dark
-            >
-              <Text style={styles.loginText}>LOGIN</Text>
-            </Button>
+    render() {
+        return (
+            <BaseScreen
+                style={{
+                flex: 1
+            }}
+                loading={this.state.loading}>
+                <Container style={styles.container}>
+                    <Content contentContainerStyle={styles.content}>
+                        {/* Logo */}
+                        <View style={styles.logoContainer}>
+                            <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
+                        </View>
 
-            <View style={styles.forgotPasswordContainer}>
-              <TouchableOpacity onPress={this.onForgotPasswordButtonPressed}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
+                        {/* Form */}
+                        <Form style={styles.form}>
+                            <Item style={styles.item} last>
+                                <Input
+                                    style={styles.input}
+                                    placeholder="Username"
+                                    placeholderTextColor="#afb0d1"
+                                    returnKeyType="next"
+                                    autoCapitalize="none"
+                                    onSubmitEditing={() => {
+                                      this.passwordInput._root.focus();
+                                    }}
+                                    onChangeText={username => this.setState({username})}/>
+                            </Item>
+                            <Item style={styles.item} last>
+                                <Input
+                                    style={styles.input}
+                                    placeholder="Password"
+                                    ref={input => {
+                                      this.passwordInput = input;
+                                    }}
+                                    returnKeyType="done"
+                                    onSubmitEditing={this.onLoginButtonPressed}
+                                    placeholderTextColor="#afb0d1"
+                                    onChangeText={password => this.setState({password})}
+                                    secureTextEntry/>
+                            </Item>
+                        </Form>
 
-            {/* Signup Button */}
-            <View style={styles.signupContainer}>
-              <Text style={styles.dontHaveAccountText}>Don't have an account yet?</Text>
-              <TouchableOpacity onPress={this.onSignupButtonPressed}>
-                <Text style={styles.signupText}>Sign Up here.</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Content>
-      </Container>
-    );
-  }
+                        <View style={styles.buttonContainer}>
+                            {/* Login Button */}
+                            <Button
+                                style={styles.button}
+                                onPress={this.onLoginButtonPressed}
+                                hasText
+                                block
+                                large
+                                dark>
+                                <Text style={styles.loginText}>LOGIN</Text>
+                            </Button>
+
+                            <View style={styles.forgotPasswordContainer}>
+                                <TouchableOpacity onPress={this.onForgotPasswordButtonPressed}>
+                                    <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            {/* Signup Button */}
+                            <View style={styles.signupContainer}>
+                                <Text style={styles.dontHaveAccountText}>Don't have an account yet?</Text>
+                                <TouchableOpacity onPress={this.onSignupButtonPressed}>
+                                    <Text style={styles.signupText}>Sign Up here.</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Content>
+                </Container>
+            </BaseScreen>
+        );
+    }
 }
 
 export default Login;

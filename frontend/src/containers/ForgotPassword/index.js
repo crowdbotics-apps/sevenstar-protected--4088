@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, ActivityIndicator, View, Alert} from 'react-native';
+import {Image, TouchableOpacity, View, Alert} from 'react-native';
 import {
     Button,
     Container,
@@ -16,7 +16,6 @@ import styles from './styles';
 import BaseScreen from '../BaseScreen';
 import {showMessage, hideMessage} from "react-native-flash-message";
 import {forgetAPI} from '../../services/Authentication';
-import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 
 var constraints = {
     email: {
@@ -82,9 +81,11 @@ class ForgetPassword extends Component {
 
     render() {
         return (
-            <BaseScreen style={{
+            <BaseScreen
+                style={{
                 flex: 1
-            }}>
+            }}
+                loading={this.state.loading}>
                 <Container style={styles.container}>
                     <Content contentContainerStyle={styles.content}>
 
@@ -153,24 +154,8 @@ class ForgetPassword extends Component {
                         </View>
                     </Content>
                 </Container>
-                {this.loadingDialog()}
             </BaseScreen>
         );
-    }
-    loadingDialog() {
-        return (
-            <PopupDialog
-                visible={this.state.loading}
-                style={{
-                width: '100%',
-                padding: 20,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-                dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}>
-                <ActivityIndicator size="large" color="#0000ff"/>
-            </PopupDialog>
-        )
     }
 }
 

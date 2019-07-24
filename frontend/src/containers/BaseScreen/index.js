@@ -1,6 +1,6 @@
-import React, {Component, ActivityIndicator} from 'react';
+import React, {Component} from 'react';
 import {
-    Platform,
+    ActivityIndicator,
     Fragment,
     View,
     StatusBar,
@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import FlashMessage from "react-native-flash-message";
 import {Keyboard} from 'react-native'
+import PopupDialog, {SlideAnimation} from 'react-native-popup-dialog';
 
 export default class BaseScreen extends Component {
 
@@ -43,11 +44,28 @@ export default class BaseScreen extends Component {
                     }}>
 
                         {this.props.children}
-                        <FlashMessage position="top"/>
+                        <FlashMessage position="top"/> 
+                        {this.loadingDialog()}
                     </View>
                 </TouchableWithoutFeedback>
 
             </SafeAreaView>
         );
+    }
+
+    loadingDialog() {
+        return (
+            <PopupDialog
+                visible={this.props.loading}
+                style={{
+                width: '100%',
+                padding: 20,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+                dialogAnimation={new SlideAnimation({slideFrom: 'bottom'})}>
+                <ActivityIndicator size="large" color="#0000ff"/>
+            </PopupDialog>
+        )
     }
 }

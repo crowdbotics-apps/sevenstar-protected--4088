@@ -4,7 +4,7 @@ import APIConstants from '../utils/api/constants';
 
 
 const loginAPI = (username, password) => {
-  const path = '/';
+  const path = '/api/v1/login/';
   const url = `${Utils.serverUrl}${path}`;
   const params = {
     username,
