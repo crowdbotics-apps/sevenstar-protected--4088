@@ -26,13 +26,13 @@ class ChooseRole extends Component {
             this
                 .props
                 .navigation
-                .navigate('OfficerSignUp');
+                .replace('OfficerSignUp');
         }
         if (this.state.selected_role == 'citizen') {
             this
                 .props
                 .navigation
-                .navigate('CitizenSignUp');
+                .replace('CitizenSignUp');
         }
         return;
     }
@@ -47,7 +47,7 @@ class ChooseRole extends Component {
         this
             .props
             .navigation
-            .navigate('Login');
+            .replace('Login');
     }
 
     render() {
@@ -65,7 +65,7 @@ class ChooseRole extends Component {
                             this
                                 .props
                                 .navigation
-                                .navigate('Login');
+                                .replace('Login');
                         }}
                             style={{
                             width: 50,

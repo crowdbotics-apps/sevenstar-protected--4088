@@ -20,9 +20,9 @@ if (__DEV__) {
 
 
 const persistConfig = {
-  key: 'root',
+  key: 'a',
   storage,
-  //blacklist: ['auth','nav']
+  blacklist: ['reducer','nav']
 }
 const persistedReducer = persistReducer(persistConfig, reducers)
 const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk, middleware)));

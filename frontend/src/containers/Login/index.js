@@ -20,7 +20,7 @@ var constraints = {
     username: {
         presence: true,
         email: {
-            message: 'is not valid.'
+            message: 'is not valid email.'
         }
     },
     password: {
@@ -92,7 +92,7 @@ class Login extends Component {
         this
             .props
             .navigation
-            .navigate('ChooseRole');
+            .replace('ChooseRole');
     }
 
     // navigate to forgot password screen
@@ -100,7 +100,7 @@ class Login extends Component {
         this
             .props
             .navigation
-            .navigate('ForgotPassword');
+            .replace('ForgotPassword');
     }
 
     render() {

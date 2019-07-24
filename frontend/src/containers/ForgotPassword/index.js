@@ -76,7 +76,7 @@ class ForgetPassword extends Component {
         this
             .props
             .navigation
-            .navigate('Login');
+            .replace('Login');
     }
 
     render() {
@@ -94,7 +94,7 @@ class ForgetPassword extends Component {
                             this
                                 .props
                                 .navigation
-                                .navigate('Login');
+                                .replace('Login');
                         }}
                             style={{
                             width: 50,
