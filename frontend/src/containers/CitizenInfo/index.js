@@ -125,6 +125,48 @@ var constraintsForm1 = {
             within: [""],
             message: "can not be blanked."
         }
+    },
+    weight: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    address: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    city: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    zip_code: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    state: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
+    },
+    licence_number: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
     }
 };
 
@@ -141,10 +183,12 @@ class Signup extends Component {
         city: '',
         zip_code: '',
         licence_number: '',
+        licence_image: null,
         image: null,
         isDateTimePickerVisible: false,
         formShow: 1,
-        loading: false
+        loading: false,
+        state: ''
     };
 
     // navigate to login screen after a successful signup
@@ -161,18 +205,52 @@ class Signup extends Component {
                 return;
             }
         }
+        if (form == "complete") {
+            this.completeForm();
+            return;
+        }
         // TODO: Login
         this.setState({formShow: form})
     }
 
+    completeForm() {
+        const {licence_number} = this.state;
+        let errors = validate({
+            licence_number: licence_number
+        }, constraintsForm1);
+
+        if (errors) {
+            console.log("onSignupButtonPressed errors:: ", errors);
+            if (errors.licence_number) {
+                showMessage({message: errors.licence_number[0], type: "error"});
+                return false;
+            }
+        }
+        if (this.licence_image == null) {
+            showMessage({message: "Please Select the license Image..", type: "error"});
+        }
+        this
+            .props
+            .navigation
+            .replace('SignUpComplete');
+    }
+
     validateForm1() {
-        const {first_name, last_name, birthdate, inches, feets} = this.state;
+        const {
+            first_name,
+            last_name,
+            birthdate,
+            weight,
+            inches,
+            feets
+        } = this.state;
         let errors = validate({
             first_name: first_name,
             last_name: last_name,
             birthdate: birthdate,
             feets: feets,
-            inches: inches
+            inches: inches,
+            weight: weight
         }, constraintsForm1);
 
         if (errors) {
@@ -189,11 +267,15 @@ class Signup extends Component {
                 showMessage({message: errors.birthdate[0], type: "error"});
                 return false;
             }
+            if (errors.weight) {
+                showMessage({message: errors.weight[0], type: "error"});
+                return false;
+            }
             if (errors.feets) {
                 showMessage({message: errors.feets[0], type: "error"});
                 return false;
             }
-            if (errors.feets) {
+            if (errors.inches) {
                 showMessage({message: errors.inches[0], type: "error"});
                 return false;
             }
@@ -202,35 +284,30 @@ class Signup extends Component {
     }
 
     validateForm2() {
-        const {first_name, last_name, birthdate, inches, feets} = this.state;
+        const {city, zip_code, address, state} = this.state;
         let errors = validate({
-            first_name: first_name,
-            last_name: last_name,
-            birthdate: birthdate,
-            feets: feets,
-            inches: inches
+            city: city,
+            zip_code: zip_code,
+            address: address,
+            state: state
         }, constraintsForm1);
 
         if (errors) {
             console.log("onSignupButtonPressed errors:: ", errors);
-            if (errors.first_name) {
-                showMessage({message: errors.first_name[0], type: "error"});
+            if (errors.address) {
+                showMessage({message: errors.address[0], type: "error"});
                 return false;
             }
-            if (errors.last_name) {
-                showMessage({message: errors.last_name[0], type: "error"});
+            if (errors.city) {
+                showMessage({message: errors.city[0], type: "error"});
                 return false;
             }
-            if (errors.birthdate) {
-                showMessage({message: errors.birthdate[0], type: "error"});
+            if (errors.zip_code) {
+                showMessage({message: errors.zip_code[0], type: "error"});
                 return false;
             }
-            if (errors.feets) {
-                showMessage({message: errors.feets[0], type: "error"});
-                return false;
-            }
-            if (errors.feets) {
-                showMessage({message: errors.inches[0], type: "error"});
+            if (errors.state) {
+                showMessage({message: errors.state[0], type: "error"});
                 return false;
             }
         }
@@ -300,10 +377,18 @@ class Signup extends Component {
                     <Content contentContainerStyle={styles.content}>
                         <TouchableOpacity
                             onPress={() => {
-                            this
-                                .props
-                                .navigation
-                                .replace('CitizenSignUp');
+                            if (this.state.formShow == 1) {
+                                this
+                                    .props
+                                    .navigation
+                                    .replace('CitizenSignUp');
+                            }
+                            if (this.state.formShow == 2) {
+                                this.setState({formShow: 1});
+                            }
+                            if (this.state.formShow == 3) {
+                                this.setState({formShow: 2});
+                            }
                         }}
                             style={{
                             width: 50,
@@ -353,17 +438,31 @@ class Signup extends Component {
                 <Item style={styles.item} last>
                     <Input
                         style={styles.input}
+                        value={this.state.first_name}
                         placeholder="First Name"
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
+                        onSubmitEditing={() => {
+                        this
+                            .last_nameInput
+                            ._root
+                            .focus();
+                    }}
                         onChangeText={first_name => this.setState({first_name})}/>
                 </Item>
 
                 <Item style={styles.item} last>
                     <Input
                         style={styles.input}
+                        value={this.state.last_name}
                         placeholder="Last Name"
                         placeholderTextColor="#afb0d1"
+                        ref={input => {
+                        this.last_nameInput = input;
+                    }}
+                        onSubmitEditing={() => {
+                        this._showDateTimePicker(this)
+                    }}
                         autoCapitalize="words"
                         onChangeText={last_name => this.setState({last_name})}/>
                 </Item>
@@ -389,6 +488,7 @@ class Signup extends Component {
                             <Input
                                 value={this.state.birthdate}
                                 style={styles.input}
+                                value={this.state.birthdate}
                                 placeholder="Date of Birth"
                                 placeholderTextColor="#afb0d1"
                                 returnKeyType="next"
@@ -405,6 +505,8 @@ class Signup extends Component {
                         style={styles.input}
                         placeholder="Weight in KG"
                         placeholderTextColor="#afb0d1"
+                        keyboardType={"numeric"}
+                        value={this.state.weight}
                         autoCapitalize="none"
                         onChangeText={weight => this.setState({weight})}/>
                 </Item>
@@ -492,6 +594,9 @@ class Signup extends Component {
                         placeholder="Street address"
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="sentences"
+                        onSubmitEditing={() => {
+                          this.cityInput._root.focus();
+                        }}
                         onChangeText={address => this.setState({address})}/>
                 </Item>
 
@@ -499,6 +604,12 @@ class Signup extends Component {
                     <Input
                         style={styles.input}
                         placeholder="City"
+                        ref={input => {
+                          this.cityInput = input;
+                        }}
+                        onSubmitEditing={() => {
+                          this.zip_codeInput._root.focus();
+                        }}
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
                         onChangeText={city => this.setState({city})}/>
@@ -508,6 +619,10 @@ class Signup extends Component {
                     <Input
                         style={styles.input}
                         placeholder="ZIP CODE"
+                        ref={input => {
+                          this.zip_codeInput = input;
+                        }}
+                        keyboardType={"number-pad"}
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
                         onChangeText={zip_code => this.setState({zip_code})}/>
@@ -581,10 +696,7 @@ class Signup extends Component {
                     <Button
                         style={styles.button}
                         onPress={() => {
-                        this
-                            .props
-                            .navigation
-                            .replace('SignUpComplete');
+                        this.onNextButtonPressed('complete')
                     }}
                         hasText
                         block
