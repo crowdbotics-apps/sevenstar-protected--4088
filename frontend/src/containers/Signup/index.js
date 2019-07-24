@@ -28,12 +28,12 @@ class Signup extends Component {
   onSignupButtonPressed = () => {
     // TODO: Login
 
-    this.props.navigation.navigate('Login');
+    this.props.navigation.replace('Login');
   }
 
   // navigate to login screen
   onLoginButtonPressed = () => {
-    this.props.navigation.navigate('Login');
+    this.props.navigation.replace('Login');
   }
 
   render() {
@@ -103,7 +103,7 @@ class Signup extends Component {
               dark
               rounded
             >
-              <Text style={styles.signupText}>PROCE</Text>
+              <Text style={styles.signupText}>PROCED</Text>
             </Button>
 
             {/* Signup Button */}

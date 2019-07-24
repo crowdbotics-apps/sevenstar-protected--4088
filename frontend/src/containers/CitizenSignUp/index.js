@@ -28,12 +28,12 @@ class Signup extends Component {
   onSignupButtonPressed = () => {
     // TODO: Login
 
-    this.props.navigation.navigate('CitizenInfo');
+    this.props.navigation.replace('CitizenInfo');
   }
 
   // navigate to login screen
   onLoginButtonPressed = () => {
-    this.props.navigation.navigate('Login');
+    this.props.navigation.replace('Login');
   }
 
   render() {

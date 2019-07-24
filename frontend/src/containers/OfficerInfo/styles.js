@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(20),
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(5),
   },
   logoText: {

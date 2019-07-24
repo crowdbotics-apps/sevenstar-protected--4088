@@ -25,7 +25,7 @@ class SignUpComplete extends Component {
   onGotItButtonPressed = () => {
     // TODO: Forgot Password
 
-    this.props.navigation.navigate('Login');
+    this.props.navigation.replace('Login');
   }
 
   render() {

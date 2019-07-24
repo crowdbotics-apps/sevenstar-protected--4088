@@ -44,7 +44,17 @@ export default class BaseScreen extends Component {
                     }}>
 
                         {this.props.children}
-                        <FlashMessage position="top"/> 
+                        <View
+                            style={{
+                            position: 'absolute',
+                            width: '100%'
+                        }}>
+                            <FlashMessage
+                                style={{
+                                zIndex: 222
+                            }}
+                                position="top"/>
+                        </View>
                         {this.loadingDialog()}
                     </View>
                 </TouchableWithoutFeedback>

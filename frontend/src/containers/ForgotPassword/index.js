@@ -55,7 +55,7 @@ class ForgetPassword extends Component {
             this.setState({loading: false});
             this.showAlert("Forget Password!", resp.response)
         })
-        //this  .props .navigation .navigate('Login');
+        //this  .props .navigation .replace('Login');
     }
 
     showLoader() {

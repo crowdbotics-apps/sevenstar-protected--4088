@@ -31,7 +31,11 @@ var constraints = {
         }
     },
     phone_no: {
-        presence: true
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "can not be blanked."
+        }
     }
 };
 
@@ -46,7 +50,7 @@ class Signup extends Component {
 
     // navigate to login screen after a successful signup
     onSignupButtonPressed = () => {
-        // TODO: Login this     .props     .navigation     .navigate('OfficerInfo');
+        // TODO: Login this     .props     .navigation     .replace('OfficerInfo');
         const {username, password, phone_no} = this.state;
         let errors = validate({
             username: username,
@@ -55,7 +59,7 @@ class Signup extends Component {
         }, constraints);
 
         if (errors) {
-            console.log("onLoginPress errors:: ", errors);
+            console.log("onSignupButtonPressed errors:: ", errors);
             if (errors.username) {
                 showMessage({message: errors.username[0], type: "error"});
                 return;
@@ -127,8 +131,11 @@ class Signup extends Component {
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="none"
                                     onSubmitEditing={() => {
-                                      this.passwordInput._root.focus();
-                                    }}
+                                    this
+                                        .passwordInput
+                                        ._root
+                                        .focus();
+                                }}
                                     onChangeText={username => this.setState({username})}/>
                             </Item>
                             <Item style={styles.item} last>
@@ -137,11 +144,14 @@ class Signup extends Component {
                                     placeholder="Password"
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={() => {
-                                      this.phone_noInput._root.focus();
-                                    }}
+                                    this
+                                        .phone_noInput
+                                        ._root
+                                        .focus();
+                                }}
                                     ref={input => {
-                                      this.passwordInput = input;
-                                    }}
+                                    this.passwordInput = input;
+                                }}
                                     onChangeText={password => this.setState({password})}
                                     secureTextEntry/>
                             </Item>
@@ -153,8 +163,8 @@ class Signup extends Component {
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={this.onSignupButtonPressed}
                                     ref={input => {
-                                      this.phone_noInput = input;
-                                    }}
+                                    this.phone_noInput = input;
+                                }}
                                     onChangeText={phone_no => this.setState({phone_no})}/>
                             </Item>
 

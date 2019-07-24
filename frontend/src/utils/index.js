@@ -70,7 +70,7 @@ const Utils = {
     StackActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: route }),
+        NavigationActions.replace({ routeName: route }),
       ],
     })
   ),

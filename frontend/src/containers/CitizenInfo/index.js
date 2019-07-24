@@ -132,7 +132,7 @@ class Signup extends Component {
         this
             .props
             .navigation
-            .navigate('Login');
+            .replace('Login');
     }
     componentDidMount() {
         this.getPermissionAsync();
@@ -431,7 +431,7 @@ class Signup extends Component {
                         this
                             .props
                             .navigation
-                            .navigate('SignUpComplete');
+                            .replace('SignUpComplete');
                     }}
                         hasText
                         block

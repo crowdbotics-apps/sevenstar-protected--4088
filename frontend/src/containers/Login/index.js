@@ -67,7 +67,7 @@ class Login extends Component {
                 this
                     .props
                     .navigation
-                    .navigate('Home');
+                    .replace('Home');
             } else {
                 this.showAlert("Login!", resp.non_field_errors)
             }
