@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View, Alert} from 'react-native';
 import {
     Button,
     Container,
@@ -15,7 +15,9 @@ import {ImagePicker, Permissions, Constants} from 'expo';
 import BaseScreen from '../BaseScreen';
 import {showMessage, hideMessage} from "react-native-flash-message";
 import validate from 'validate.js';
+import {connect} from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
+import {signupOfficerAPI} from '../../services/Authentication';
 
 var constraints = {
     first_name: {
@@ -45,6 +47,13 @@ var constraints = {
             within: [""],
             message: "can not be blanked."
         }
+    },
+    profile_image: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "^Select to Upload Photo."
+        }
     }
 };
 
@@ -56,18 +65,23 @@ class Signup extends Component {
         batch_no: '',
         profile_image: '',
         image: null,
-        loading: false
+        loading: false,
+        username: '',
+        password: '',
+        phone_no: '',
+        role: 'officer'
     };
 
     // navigate to login screen after a successful signup
     onSignupButtonPressed = () => {
         // TODO: Login
-        const {first_name, last_name, department, batch_no} = this.state;
+        const {first_name, last_name, department, batch_no, profile_image} = this.state;
         let errors = validate({
             first_name: first_name,
             last_name: last_name,
             department: department,
-            batch_no: batch_no
+            batch_no: batch_no,
+            profile_image: profile_image
         }, constraints);
 
         if (errors) {
@@ -88,11 +102,48 @@ class Signup extends Component {
                 showMessage({message: errors.batch_no[0], type: "error"});
                 return;
             }
+            if (errors.profile_image) {
+                showMessage({message: errors.profile_image[0], type: "error"});
+                return;
+            }
         }
-        this
-            .props
-            .navigation
-            .replace('SignUpComplete');
+        this.setState({loading: true});
+        signupOfficerAPI({
+            email: this.state.username,
+            username: this.state.username,
+            password: this.state.password,
+            phone_no: this.state.phone_no,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            officer_department: this.state.department,
+            officer_batch_no: this.state.batch_no,
+            profile_image: this.state.profile_image
+        }).then((resp) => {
+            console.log(resp.response);
+            this.setState({loading: false});
+            if (resp.success) {
+                this
+                    .props
+                    .updateSignUpData(null);
+                this
+                    .props
+                    .navigation
+                    .replace('SignUpComplete');
+            }
+        }).catch((ex) => {
+            console.log("OfficerInfo::", ex.toString());
+            this.setState({loading: false});
+            this.showAlert("Officer SignUp!", "Back to change the username..")
+        });
+    }
+
+    showAlert(title, message) {
+        Alert.alert(title, message, [
+            {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+            }
+        ], {cancelable: false})
     }
 
     // navigate to login screen
@@ -104,6 +155,12 @@ class Signup extends Component {
     }
     componentDidMount() {
         this.getPermissionAsync();
+    }
+
+    async componentWillMount() {
+        if (this.props.signUpData) {
+            this.setState({username: this.props.signUpData.username, password: this.props.signUpData.password, phone_no: this.props.signUpData.phone_no});
+        }
     }
 
     getPermissionAsync = async() => {
@@ -119,13 +176,14 @@ class Signup extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
+            base64: true,
             aspect: [4, 3]
         });
 
-        console.log(result);
+        //console.log(result);
 
         if (!result.cancelled) {
-            this.setState({image: result.uri});
+            this.setState({profile_image: result.base64});
         }
     };
 
@@ -175,8 +233,11 @@ class Signup extends Component {
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     onSubmitEditing={() => {
-                                      this.last_nameInput._root.focus();
-                                    }}
+                                    this
+                                        .last_nameInput
+                                        ._root
+                                        .focus();
+                                }}
                                     onChangeText={first_name => this.setState({first_name})}/>
                             </Item>
 
@@ -188,11 +249,14 @@ class Signup extends Component {
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     ref={input => {
-                                      this.last_nameInput = input;
-                                    }}
+                                    this.last_nameInput = input;
+                                }}
                                     onSubmitEditing={() => {
-                                      this.departmentInput._root.focus();
-                                    }}
+                                    this
+                                        .departmentInput
+                                        ._root
+                                        .focus();
+                                }}
                                     onChangeText={last_name => this.setState({last_name})}/>
                             </Item>
 
@@ -204,11 +268,14 @@ class Signup extends Component {
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="words"
                                     ref={input => {
-                                      this.departmentInput = input;
-                                    }}
+                                    this.departmentInput = input;
+                                }}
                                     onSubmitEditing={() => {
-                                      this.batch_notInput._root.focus();
-                                    }}
+                                    this
+                                        .batch_notInput
+                                        ._root
+                                        .focus();
+                                }}
                                     onChangeText={department => this.setState({department})}/>
                             </Item>
 
@@ -221,11 +288,11 @@ class Signup extends Component {
                                     autoCapitalize="none"
                                     keyboardType={"number-pad"}
                                     ref={input => {
-                                      this.batch_notInput = input;
-                                    }}
+                                    this.batch_notInput = input;
+                                }}
                                     onSubmitEditing={() => {
-                                      this._pickImage();
-                                    }}
+                                    this._pickImage();
+                                }}
                                     onChangeText={batch_no => this.setState({batch_no})}/>
                             </Item>
 
@@ -240,7 +307,7 @@ class Signup extends Component {
                             ]}
                                 hasText
                                 onPress={this._pickImage}>
-                                <Text style={styles.signupText}>Upload your photo</Text>
+                                <Text style={styles.signupText}>Select your photo</Text>
                             </Button>
 
                             <View style={styles.buttonContainer}>
@@ -264,4 +331,12 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+const mapStateToProps = state => ({signUpData: state.auth.userData});
+
+const mapDispatchToProps = (dispatch) => ({
+    updateSignUpData: (data) => {
+        dispatch({type: 'UpdateSignUpData', userData: data})
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

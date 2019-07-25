@@ -28,14 +28,18 @@ const checkUserNameAPI = (username) => {
   return client.sendRequest(params);
 };
 
-const signupAPI = (username, password, confirmPassword) => {
-  const path = '/';
+const signupOfficerAPI = (params) => {
+  const path = '/api/v1/officer-signup/';
   const url = `${Utils.serverUrl}${path}`;
-  const params = {
-    username,
-    password,
-    confirmPassword,
-  };
+
+  const client = new APIClient(url, APIConstants.HTTPMethod.POST);
+
+  return client.sendRequest(params);
+};
+
+const signupCitizenAPI = (params) => {
+  const path = '/api/v1/citizen-signup/';
+  const url = `${Utils.serverUrl}${path}`;
 
   const client = new APIClient(url, APIConstants.HTTPMethod.POST);
 
@@ -54,4 +58,4 @@ const forgetAPI = (email) => {
   return client.sendRequest(params);
 };
 
-export { loginAPI, signupAPI,forgetAPI,checkUserNameAPI };
+export { loginAPI,forgetAPI,checkUserNameAPI ,signupOfficerAPI,signupCitizenAPI};

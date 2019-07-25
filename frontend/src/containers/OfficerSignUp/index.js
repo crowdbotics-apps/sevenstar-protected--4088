@@ -101,7 +101,6 @@ class Signup extends Component {
         if (this.props.signUpData) {
             this.setState({username: this.props.signUpData.username, password: this.props.signUpData.password, phone_no: this.props.signUpData.phone_no});
         }
-
     }
 
     showAlert(title, message) {
