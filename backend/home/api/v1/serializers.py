@@ -117,6 +117,7 @@ class AppOfficerSignupSerializer(serializers.Serializer):
            role=2,
            officer_batch_no=validated_data.get('officer_batch_no'),
            profile_image=decode_based64_file(validated_data.get('profile_image')),
+           phone_no=validated_data.get('phone_no'),
         )
         validated_data['success'] = True
         return validated_data
@@ -136,6 +137,7 @@ class AppCitizenSignupSerializer(serializers.Serializer):
     email = serializers.EmailField()
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
+    phone_no = serializers.CharField(write_only=True,max_length=50)
     password = serializers.CharField(
         write_only=True,
         required=True,
@@ -185,6 +187,7 @@ class AppCitizenSignupSerializer(serializers.Serializer):
            zip_code=validated_data.get('zip_code'),
            state=validated_data.get('state'),
            city=validated_data.get('city'),
+           phone_no=validated_data.get('phone_no'),
            driver_licence_no=validated_data.get('driver_licence_no'),
            licence_photo=decode_based64_file(validated_data.get('licence_photo')),
            profile_image=decode_based64_file(validated_data.get('profile_image')),
