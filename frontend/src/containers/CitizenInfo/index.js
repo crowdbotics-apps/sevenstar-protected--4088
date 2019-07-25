@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, TouchableHighlight, View} from 'react-native';
+import {Image, TouchableOpacity, TouchableHighlight, View, Alert} from 'react-native';
 import {
     Button,
     Container,
@@ -8,7 +8,6 @@ import {
     Item,
     Input,
     Text
-
 } from 'native-base';
 
 import constants from '../../constants';
@@ -21,6 +20,8 @@ import BaseScreen from '../BaseScreen';
 import {showMessage, hideMessage} from "react-native-flash-message";
 import validate from 'validate.js';
 import {Ionicons} from '@expo/vector-icons';
+import {signupCitizenAPI} from '../../services/Authentication';
+import {connect} from 'react-redux';
 
 const inches = [
     {
@@ -167,6 +168,20 @@ var constraintsForm1 = {
             within: [""],
             message: "can not be blanked."
         }
+    },
+    profile_image: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "^Select to Upload Photo."
+        }
+    },
+    licence_image: {
+        presence: true,
+        exclusion: {
+            within: [""],
+            message: "^Select to Upload Licence Photo."
+        }
     }
 };
 
@@ -183,12 +198,16 @@ class Signup extends Component {
         city: '',
         zip_code: '',
         licence_number: '',
-        licence_image: null,
+        licence_image: '',
         image: null,
         isDateTimePickerVisible: false,
         formShow: 1,
         loading: false,
-        state: ''
+        state: '',
+        username: '',
+        password: '',
+        phone_no: '',
+        role: 'citizen'
     };
 
     // navigate to login screen after a successful signup
@@ -213,10 +232,34 @@ class Signup extends Component {
         this.setState({formShow: form})
     }
 
+    async componentWillMount() {
+        if (this.props.signUpData) {
+            this.setState({
+                first_name: this.props.signUpData.first_name,
+                last_name: this.props.signUpData.last_name,
+                birthdate: this.props.signUpData.birthdate,
+                feets: this.props.signUpData.feets,
+                inches: this.props.signUpData.inches,
+                weight: this.props.signUpData.weight,
+                profile_image: this.props.signUpData.profile_image,
+                address: this.props.signUpData.address,
+                city: this.props.signUpData.city,
+                zip_code: this.props.signUpData.zip_code,
+                state: this.props.signUpData.state,
+                licence_number: this.props.signUpData.licence_number,
+                licence_image: this.props.signUpData.licence_image,
+                username: this.props.signUpData.username,
+                password: this.props.signUpData.password,
+                phone_no: this.props.signUpData.phone_no
+            });
+        }
+    }
+
     completeForm() {
-        const {licence_number} = this.state;
+        const {licence_number, licence_image} = this.state;
         let errors = validate({
-            licence_number: licence_number
+            licence_number: licence_number,
+            licence_image: licence_image
         }, constraintsForm1);
 
         if (errors) {
@@ -225,14 +268,72 @@ class Signup extends Component {
                 showMessage({message: errors.licence_number[0], type: "error"});
                 return false;
             }
+            if (errors.licence_image) {
+                showMessage({message: errors.licence_image[0], type: "error"});
+                return false;
+            }
         }
-        if (this.licence_image == null) {
-            showMessage({message: "Please Select the license Image..", type: "error"});
-        }
-        this
-            .props
-            .navigation
-            .replace('SignUpComplete');
+        this.setState({loading: true});
+        console.log("CitizenInfo:", {
+            email: this.state.username,
+            username: this.state.username,
+            password: this.state.password,
+            phone_no: this.state.phone_no,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            birthdate: this.state.birthdate,
+            height: this.state.feets + "." + this.state.inches,
+            street_address: this.state.address,
+            zip_code: this.state.zip_code,
+            driver_licence_no: this.state.licence_number,
+            city: this.state.city,
+            state: this.state.state,
+            weight: this.state.weight
+        })
+        signupCitizenAPI({
+            email: this.state.username,
+            username: this.state.username,
+            password: this.state.password,
+            phone_no: this.state.phone_no,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            birthdate: this.state.birthdate,
+            height: this.state.feets + "." + this.state.inches,
+            street_address: this.state.address,
+            zip_code: this.state.zip_code,
+            city: this.state.city,
+            state: this.state.state,
+            profile_image: this.state.profile_image,
+            licence_photo: this.state.licence_image,
+            driver_licence_no: this.state.licence_number,
+            weight: this.state.weight,
+            username: this.state.username
+        }).then((resp) => {
+            console.log(resp.response);
+            this.setState({loading: false});
+            if (resp.success) {
+                this
+                    .props
+                    .updateSignUpData(null);
+                this
+                    .props
+                    .navigation
+                    .replace('SignUpComplete');
+            }
+        }).catch((ex) => {
+            console.log("CitizenInfo::", ex.toString());
+            this.setState({loading: false});
+            this.showAlert("Citizen SignUp!", "Back to change the username..")
+        });
+    }
+
+    showAlert(title, message) {
+        Alert.alert(title, message, [
+            {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+            }
+        ], {cancelable: false})
     }
 
     validateForm1() {
@@ -242,7 +343,8 @@ class Signup extends Component {
             birthdate,
             weight,
             inches,
-            feets
+            feets,
+            profile_image
         } = this.state;
         let errors = validate({
             first_name: first_name,
@@ -250,7 +352,8 @@ class Signup extends Component {
             birthdate: birthdate,
             feets: feets,
             inches: inches,
-            weight: weight
+            weight: weight,
+            profile_image: profile_image
         }, constraintsForm1);
 
         if (errors) {
@@ -279,8 +382,44 @@ class Signup extends Component {
                 showMessage({message: errors.inches[0], type: "error"});
                 return false;
             }
+            if (errors.profile_image) {
+                showMessage({message: errors.profile_image[0], type: "error"});
+                return;
+            }
         }
+        this.saveForm1DataToProps();
         return true;
+    }
+
+    saveForm1DataToProps() {
+        this.props.signUpData.first_name = this.state.first_name;
+        this.props.signUpData.last_name = this.state.last_name;
+        this.props.signUpData.birthdate = this.state.birthdate;
+        this.props.signUpData.weight = this.state.weight;
+        this.props.signUpData.feets = this.state.feets;
+        this.props.signUpData.inches = this.state.inches;
+        this.props.signUpData.profile_image = this.state.profile_image;
+        this
+            .props
+            .updateSignUpData(this.props.signUpData);
+    }
+
+    saveForm2DataToProps() {
+        this.props.signUpData.city = this.state.city;
+        this.props.signUpData.zip_code = this.state.zip_code;
+        this.props.signUpData.address = this.state.address;
+        this.props.signUpData.state = this.state.state;
+        this
+            .props
+            .updateSignUpData(this.props.signUpData);
+    }
+
+    saveForm3DataToProps() {
+        this.props.signUpData.licence_image = this.state.licence_image;
+        this.props.signUpData.licence_number = this.state.licence_number;
+        this
+            .props
+            .updateSignUpData(this.props.signUpData);
     }
 
     validateForm2() {
@@ -311,6 +450,8 @@ class Signup extends Component {
                 return false;
             }
         }
+
+        this.saveForm2DataToProps();
         return true;
     }
 
@@ -320,14 +461,9 @@ class Signup extends Component {
 
     _handleDatePicked = (date) => {
         this._hideDateTimePicker();
+
         this.setState({
-            date_of_birth: new Date(date)
-                .toISOString()
-                .replace(/T/, ' ')
-                .replace(/\..+/, '')
-        })
-        this.setState({
-            birthdate: new Date(date).toDateString()
+            birthdate: moment(date).format('YYYY-MM-DD')
         })
     };
 
@@ -355,13 +491,29 @@ class Signup extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
+            base64: true,
             aspect: [4, 3]
         });
 
         console.log(result);
 
         if (!result.cancelled) {
-            this.setState({image: result.uri});
+            this.setState({profile_image: result.base64});
+        }
+    };
+
+    _pickLicenseImage = async() => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            base64: true,
+            aspect: [4, 3]
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            this.setState({licence_image: result.base64});
         }
     };
 
@@ -378,15 +530,18 @@ class Signup extends Component {
                         <TouchableOpacity
                             onPress={() => {
                             if (this.state.formShow == 1) {
+                                this.saveForm1DataToProps();
                                 this
                                     .props
                                     .navigation
                                     .replace('CitizenSignUp');
                             }
                             if (this.state.formShow == 2) {
+                                this.saveForm2DataToProps();
                                 this.setState({formShow: 1});
                             }
                             if (this.state.formShow == 3) {
+                                this.saveForm3DataToProps();
                                 this.setState({formShow: 2});
                             }
                         }}
@@ -486,7 +641,6 @@ class Signup extends Component {
                             }
                         ]}>
                             <Input
-                                value={this.state.birthdate}
                                 style={styles.input}
                                 value={this.state.birthdate}
                                 placeholder="Date of Birth"
@@ -532,6 +686,7 @@ class Signup extends Component {
                     ]}
                         data={feets}
                         initValue="Feet"
+                        selectedKey={this.state.feets}
                         value={this.state.feets}
                         onChange={(option) => {
                         this.setState({feets: option.key})
@@ -545,6 +700,7 @@ class Signup extends Component {
                         data={inches}
                         initValue="INCH"
                         value={this.state.inches}
+                        selectedKey={this.state.inches}
                         onChange={(option) => {
                         this.setState({inches: option.key})
                     }}/>
@@ -598,8 +754,11 @@ class Signup extends Component {
                         autoCapitalize="sentences"
                         value={this.state.address}
                         onSubmitEditing={() => {
-                          this.cityInput._root.focus();
-                        }}
+                        this
+                            .cityInput
+                            ._root
+                            .focus();
+                    }}
                         onChangeText={address => this.setState({address})}/>
                 </Item>
 
@@ -608,11 +767,14 @@ class Signup extends Component {
                         style={styles.input}
                         placeholder="City"
                         ref={input => {
-                          this.cityInput = input;
-                        }}
+                        this.cityInput = input;
+                    }}
                         onSubmitEditing={() => {
-                          this.zip_codeInput._root.focus();
-                        }}
+                        this
+                            .zip_codeInput
+                            ._root
+                            .focus();
+                    }}
                         value={this.state.city}
                         placeholderTextColor="#afb0d1"
                         autoCapitalize="words"
@@ -624,8 +786,8 @@ class Signup extends Component {
                         style={styles.input}
                         placeholder="ZIP CODE"
                         ref={input => {
-                          this.zip_codeInput = input;
-                        }}
+                        this.zip_codeInput = input;
+                    }}
                         value={this.state.zip_code}
                         keyboardType={"number-pad"}
                         placeholderTextColor="#afb0d1"
@@ -643,9 +805,11 @@ class Signup extends Component {
                     ]}
                         data={constants.USA_STATES}
                         value={this.state.state}
-                        initValue="Select State"
+                        initValue={this.state.state
+                        ? this.state.state
+                        : "Select State"}
                         onChange={(option) => {
-                        this.setState({state: option.key})
+                        this.setState({state: option.label})
                     }}/>
                 </View>
 
@@ -695,7 +859,7 @@ class Signup extends Component {
                     }
                 ]}
                     hasText
-                    onPress={this._pickImage}>
+                    onPress={this._pickLicenseImage}>
                     <Text style={styles.signupText}>License photo</Text>
                 </Button>
 
@@ -718,4 +882,12 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+const mapStateToProps = state => ({signUpData: state.auth.userData});
+
+const mapDispatchToProps = (dispatch) => ({
+    updateSignUpData: (data) => {
+        dispatch({type: 'UpdateSignUpData', userData: data})
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

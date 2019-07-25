@@ -307,7 +307,7 @@ class Signup extends Component {
                             ]}
                                 hasText
                                 onPress={this._pickImage}>
-                                <Text style={styles.signupText}>Select your photo</Text>
+                                <Text style={styles.signupText}>Upload your photo</Text>
                             </Button>
 
                             <View style={styles.buttonContainer}>
