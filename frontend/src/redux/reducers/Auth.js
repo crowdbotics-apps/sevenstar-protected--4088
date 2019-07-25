@@ -2,7 +2,7 @@ const initialAuthState = {
   isLoggedIn: false
 };
 
-function auth(state = initialAuthState, action) {
+const Auth = (state = initialAuthState, action) => {
 
   console.log('auth:', action.type);
   switch (action.type) {
@@ -17,7 +17,7 @@ function auth(state = initialAuthState, action) {
               isLoggedIn: true,
               userData: action.userData
           };
-      case 'Update':
+      case 'UpdateSignUpData':
           return {
               ...state,
               userData: action.userData
@@ -59,4 +59,4 @@ function auth(state = initialAuthState, action) {
   }
 }
 
-export default auth;
+export default Auth;

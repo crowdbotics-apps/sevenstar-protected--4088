@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View, Alert} from 'react-native';
 import {
     Button,
     Container,
@@ -15,6 +15,8 @@ import BaseScreen from '../BaseScreen';
 import {showMessage, hideMessage} from "react-native-flash-message";
 import validate from 'validate.js';
 import {Ionicons} from '@expo/vector-icons';
+import {checkUserNameAPI} from '../../services/Authentication';
+import {connect} from 'react-redux';
 
 var constraints = {
     username: {
@@ -73,10 +75,42 @@ class Signup extends Component {
                 return;
             }
         }
-        this
-            .props
-            .navigation
-            .replace('OfficerInfo');
+        this.setState({loading: true});
+        checkUserNameAPI(username).then((resp) => {
+            console.log(resp.response);
+            this.setState({loading: false});
+            if (resp.response.success) {
+                this
+                    .props
+                    .updateSignUpData({username: username, password: password, phone_no: phone_no});
+                this
+                    .props
+                    .navigation
+                    .replace('OfficerInfo');
+            } else {
+                console.log(resp.response.error);
+                this.showAlert("SignUp!", resp.response.error)
+            }
+        }).catch((ex) => {
+            this.setState({loading: false});
+        });
+
+    }
+
+    async componentWillMount() {
+        if (this.props.signUpData) {
+            this.setState({username: this.props.signUpData.username, password: this.props.signUpData.password, phone_no: this.props.signUpData.phone_no});
+        }
+
+    }
+
+    showAlert(title, message) {
+        Alert.alert(title, message, [
+            {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+            }
+        ], {cancelable: false})
     }
 
     // navigate to login screen
@@ -98,6 +132,9 @@ class Signup extends Component {
                     <Content contentContainerStyle={styles.content}>
                         <TouchableOpacity
                             onPress={() => {
+                            this
+                                .props
+                                .updateSignUpData(null);
                             this
                                 .props
                                 .navigation
@@ -128,6 +165,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Username"
+                                    value={this.state.username}
                                     placeholderTextColor="#afb0d1"
                                     autoCapitalize="none"
                                     onSubmitEditing={() => {
@@ -142,6 +180,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Password"
+                                    value={this.state.password}
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={() => {
                                     this
@@ -159,6 +198,7 @@ class Signup extends Component {
                                 <Input
                                     style={styles.input}
                                     placeholder="Phone Number"
+                                    value={this.state.phone_no}
                                     keyboardType={"phone-pad"}
                                     placeholderTextColor="#afb0d1"
                                     onSubmitEditing={this.onSignupButtonPressed}
@@ -197,4 +237,12 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+const mapStateToProps = state => ({signUpData: state.auth.userData});
+
+const mapDispatchToProps = (dispatch) => ({
+    updateSignUpData: (data) => {
+        dispatch({type: 'UpdateSignUpData', userData: data})
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

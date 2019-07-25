@@ -16,6 +16,18 @@ const loginAPI = (username, password) => {
   return client.sendRequest(params);
 };
 
+const checkUserNameAPI = (username) => {
+  const path = '/api/v1/check-username/';
+  const url = `${Utils.serverUrl}${path}`;
+  const params = {
+    username
+  };
+
+  const client = new APIClient(url, APIConstants.HTTPMethod.POST);
+
+  return client.sendRequest(params);
+};
+
 const signupAPI = (username, password, confirmPassword) => {
   const path = '/';
   const url = `${Utils.serverUrl}${path}`;
@@ -42,4 +54,4 @@ const forgetAPI = (email) => {
   return client.sendRequest(params);
 };
 
-export { loginAPI, signupAPI,forgetAPI };
+export { loginAPI, signupAPI,forgetAPI,checkUserNameAPI };
