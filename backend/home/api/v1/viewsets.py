@@ -11,6 +11,7 @@ from allauth.account.views import PasswordResetView
 from django.http import HttpRequest
 from django.middleware.csrf import get_token
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from home.api.v1.serializers import AppCitizenSignupSerializer,AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
 from home.models import CustomText, HomePage
@@ -40,6 +41,15 @@ class ImageUploadAPI(APIView):
         image = request.data.get('image')
         print(image)
         return Response({"response": "Image File Name"})
+
+class LoginUserNameCheckView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        if User.objects.filter(username=username).exists():
+          return Response({"response": {'error':'Username already exist..'}})
+        else:
+          return Response({"response": {'success':'Username is not exist.'}})
+
 
 class OfficerView(APIView):
     def post(self, request):

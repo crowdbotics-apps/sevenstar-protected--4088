@@ -2,7 +2,10 @@
 from allauth.utils import generate_unique_username
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
+from django.core.files.base import ContentFile
+import base64
+import six
+import uuid
 from home.models import CustomText, HomePage,UserProfile
 
 
@@ -41,6 +44,39 @@ class SignupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('This field is required.')
         return value
 
+
+def decode_based64_file(data):
+
+    def get_file_extension(file_name, decoded_file):
+        import imghdr
+
+        extension = imghdr.what(file_name, decoded_file)
+        extension = "jpg" if extension == "jpeg" else extension
+
+        return extension
+
+    # Check if this is a base64 string
+    if isinstance(data, six.string_types):
+        # Check if the base64 string is in the "data:" format
+        if 'data:' in data and ';base64,' in data:
+            # Break out the header from the base64 content
+            header, data = data.split(';base64,')
+
+        # Try to decode the file. Return validation error if it fails.
+        try:
+            decoded_file = base64.b64decode(data)
+        except TypeError:
+            TypeError('invalid_image')
+
+        # Generate file name:
+        file_name = str(uuid.uuid4())[:20] # 12 characters are more than enough.
+        # Get the file name extension:
+        file_extension = get_file_extension(file_name, decoded_file)
+
+        complete_file_name = "%s.%s" % (file_name, file_extension, )
+
+        return ContentFile(decoded_file, name=complete_file_name)
+
 class AppOfficerSignupSerializer(serializers.Serializer):
     email = serializers.EmailField()
     first_name = serializers.CharField(write_only=True,max_length=100)
@@ -53,8 +89,9 @@ class AppOfficerSignupSerializer(serializers.Serializer):
     success_message = serializers.CharField(required=False)
     success = serializers.BooleanField(required=False)
     officer_batch_no = serializers.CharField(write_only=True,max_length=50)
+    phone_no = serializers.CharField(write_only=True,max_length=50)
     officer_department = serializers.CharField(write_only=True,max_length=100)
-    profile_image = serializers.ImageField(write_only=True)
+    profile_image = serializers.CharField(write_only=True, required=False)
 
     def create(self, validated_data):
         if validated_data.get('username') is None:
@@ -72,13 +109,14 @@ class AppOfficerSignupSerializer(serializers.Serializer):
         
         user.set_password(validated_data.get('password'))
         user.save()        
+        #print(decode_based64_file(validated_data.get('profile_image')))
         #ROLE=2 FOR OFFICE AND 1 FOR CITIZEN
         UserProfile.objects.create(
            user=user,
            officer_department=validated_data.get('officer_department'),
            role=2,
            officer_batch_no=validated_data.get('officer_batch_no'),
-           profile_image=validated_data.get('profile_image'),
+           profile_image=decode_based64_file(validated_data.get('profile_image')),
         )
         validated_data['success'] = True
         return validated_data
