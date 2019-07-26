@@ -85,7 +85,7 @@ class Signup extends Component {
                 this
                     .props
                     .navigation
-                    .replace('CitizenInfo');
+                    .replace('ChoosePurchase');
             } else {
                 console.log(resp.response.error);
                 this.showAlert("SignUp!", resp.response.error)

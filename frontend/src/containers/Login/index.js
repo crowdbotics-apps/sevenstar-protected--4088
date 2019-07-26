@@ -64,12 +64,11 @@ class Login extends Component {
             console.log(resp);
             this.setState({loading: false});
             if (resp.token) {
-                this
-                    .props
-                    .navigation
-                    .replace('Home');
-            } else {
-                this.showAlert("Login!", resp.non_field_errors)
+              this.showAlert("Login!", "The User Able to Login now with access token.."+resp.token);
+            } else if(resp.response){
+                this.showAlert("Login!", resp.response.error)
+            }else{
+              this.showAlert("Login!", 'Invalid Credentials..')
             }
         }).catch((ex) => {
 

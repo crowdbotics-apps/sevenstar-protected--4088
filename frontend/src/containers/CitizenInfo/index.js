@@ -57,9 +57,6 @@ const inches = [
     }, {
         key: "11",
         label: "11"
-    }, {
-        key: "12",
-        label: "12"
     }
 ]
 
@@ -207,7 +204,8 @@ class Signup extends Component {
         username: '',
         password: '',
         phone_no: '',
-        role: 'citizen'
+        role: 'citizen',
+        pay_role:''
     };
 
     // navigate to login screen after a successful signup
@@ -250,7 +248,8 @@ class Signup extends Component {
                 licence_image: this.props.signUpData.licence_image,
                 username: this.props.signUpData.username,
                 password: this.props.signUpData.password,
-                phone_no: this.props.signUpData.phone_no
+                phone_no: this.props.signUpData.phone_no,
+                pay_role: this.props.signUpData.pay_role
             });
         }
     }
@@ -288,7 +287,8 @@ class Signup extends Component {
             driver_licence_no: this.state.licence_number,
             city: this.state.city,
             state: this.state.state,
-            weight: this.state.weight
+            weight: this.state.weight,
+            pay_role:this.state.pay_role
         })
         signupCitizenAPI({
             email: this.state.username,
@@ -307,7 +307,8 @@ class Signup extends Component {
             licence_photo: this.state.licence_image,
             driver_licence_no: this.state.licence_number,
             weight: this.state.weight,
-            username: this.state.username
+            username: this.state.username,
+            pay_role:this.state.pay_role
         }).then((resp) => {
             console.log(resp.response);
             this.setState({loading: false});
@@ -534,7 +535,7 @@ class Signup extends Component {
                                 this
                                     .props
                                     .navigation
-                                    .replace('CitizenSignUp');
+                                    .replace('ChoosePurchase');
                             }
                             if (this.state.formShow == 2) {
                                 this.saveForm2DataToProps();

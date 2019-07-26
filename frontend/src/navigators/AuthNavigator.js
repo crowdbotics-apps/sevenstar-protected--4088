@@ -9,6 +9,7 @@ import OfficerInfo from '../containers/OfficerInfo';
 import CitizenSignUp from '../containers/CitizenSignUp';
 import CitizenInfo from '../containers/CitizenInfo';
 import SignUpComplete from '../containers/SignUpComplete';
+import ChoosePurchase from '../containers/ChoosePurchase';
 
 
 const AuthNavigator = createStackNavigator({
@@ -20,6 +21,12 @@ const AuthNavigator = createStackNavigator({
   },
   ChooseRole: {
     screen: ChooseRole,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  ChoosePurchase: {
+    screen: ChoosePurchase,
     navigationOptions: {
       header: null,
     },
