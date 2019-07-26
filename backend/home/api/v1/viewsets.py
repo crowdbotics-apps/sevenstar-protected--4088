@@ -12,6 +12,7 @@ from django.http import HttpRequest
 from django.middleware.csrf import get_token
 from django.conf import settings
 from django.contrib.auth.models import User
+from home.models import UserProfile
 
 from home.api.v1.serializers import AppCitizenSignupSerializer,AppOfficerSignupSerializer,SignupSerializer, CustomTextSerializer, HomePageSerializer
 from home.models import CustomText, HomePage
@@ -66,6 +67,21 @@ class AppOfficerViewSet(ModelViewSet):
 class AppCitizenViewSet(ModelViewSet):
     serializer_class = AppCitizenSignupSerializer
     http_method_names = ['post']
+
+class LoginUserName(APIView):
+    def post(self, request):
+        try:
+          username = request.data.get('username')
+          user = User.objects.filter(username=username)
+          approved_user = UserProfile.objects.get(user=user[0]).approved_user
+          if approved_user == 1:
+            token = ObtainAuthToken().post(request)
+            login = LoginViewSet
+            return login.create(self, request)
+          else:
+            return Response({"response": {'error':'Please wait for verification'}})
+        except:
+          return Response({"response": {'error':'username or password is incorrect.'}})
 
 class LoginViewSet(ViewSet):
     serializer_class = AuthTokenSerializer

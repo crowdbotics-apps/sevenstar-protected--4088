@@ -2,7 +2,7 @@
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 from django.urls import path
-from home.api.v1.viewsets import PasswordResetAPI,LoginUserNameCheckView,SignupViewSet,ImageUploadAPI,OfficerView,AppOfficerViewSet,AppCitizenViewSet, LoginViewSet, HomePageViewSet, CustomTextViewSet
+from home.api.v1.viewsets import PasswordResetAPI,LoginUserName,LoginUserNameCheckView,SignupViewSet,ImageUploadAPI,OfficerView,AppOfficerViewSet,AppCitizenViewSet, LoginViewSet, HomePageViewSet, CustomTextViewSet
 
 router = DefaultRouter()
 router.register('signup', SignupViewSet, base_name='signup')
@@ -18,4 +18,5 @@ urlpatterns = [
     path('officer/', OfficerView.as_view()),
     path('image-upload/', ImageUploadAPI.as_view()),
     path('check-username/', LoginUserNameCheckView.as_view()),
+    path('app-login/', LoginUserName.as_view()),
 ]
