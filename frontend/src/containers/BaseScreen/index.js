@@ -40,7 +40,8 @@ export default class BaseScreen extends Component {
                     <View
                         style={{
                         flex: 1,
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
+                        paddingBottom:30
                     }}>
 
                         {this.props.children}
