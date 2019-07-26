@@ -21,6 +21,11 @@ class UserProfile(models.Model):
         (0, 'Female'),
         (1, 'Male')
     )
+    PAY_TICKETS = (
+        (0, 'Pay Tickets'),
+        (1, 'User Full Version')
+    )
+    pay_role = models.PositiveSmallIntegerField(choices=PAY_TICKETS, null=True, blank=True)
     gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location_latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
