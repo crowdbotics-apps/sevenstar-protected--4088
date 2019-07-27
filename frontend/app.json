@@ -27,7 +27,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sevenstar.app"
+      "bundleIdentifier": "com.sevenstar.app",
+      "buildNumber": "3"
     }
   }
 }
