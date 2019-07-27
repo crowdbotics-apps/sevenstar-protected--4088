@@ -14,7 +14,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <StatusBar barStyle="light-content"/>
+                    <StatusBar barStyle="dark-content"/>
                     <AppNavigator/>
                 </PersistGate>
             </Provider>

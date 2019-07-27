@@ -23,19 +23,7 @@ export default class BaseScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView
-                style={[
-                this.props.style, {
-                    backgroundColor: "#000"
-                }
-            ]}>
-
-                {/* <View style={[ {height:20},{ backgroundColor:"#000"}]}>
-                        <StatusBar translucent backgroundColor={this.props.statusBarColor !== ''
-                        ? this.props.statusBarColor
-                        : "#000"} barStyle="light-content" />
-                    </View>                     */}
-
+            
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View
                         style={{
@@ -60,7 +48,6 @@ export default class BaseScreen extends Component {
                     </View>
                 </TouchableWithoutFeedback>
 
-            </SafeAreaView>
         );
     }
 
