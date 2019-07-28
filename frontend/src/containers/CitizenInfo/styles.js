@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(15),
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(5),
   },
   button: {
     marginVertical: PixelRatio.getPixelSizeForLayoutSize(2),

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity, View,Alert} from 'react-native';
 import {
     Button,
     Container,
@@ -44,11 +44,24 @@ class ChooseRole extends Component {
 
     // navigate to home after request of forgot password
     onRolesButtonPressed = (role) => {
+        if (role == '0') {
+            this.showAlert("Pay Tickets","waiting for payment processing to be connected");
+            return;
+        }
         this.props.signUpData.pay_role = role;
         this
             .props
             .updateSignUpData(this.props.signUpData);
         this.setState({pay_role: role})
+    }
+
+    showAlert(title, message) {
+        Alert.alert(title, message, [
+            {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed')
+            }
+        ], {cancelable: false})
     }
 
     render() {

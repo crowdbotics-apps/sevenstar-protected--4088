@@ -60,6 +60,19 @@ const inches = [
     }
 ]
 
+const genders = [
+  {
+      key: "0",
+      label: "Female"
+  }, {
+      key: "1",
+      label: "Male"
+  }, {
+      key: "2",
+      label: "Other"
+  }
+]
+
 const feets = [
     {
         key: "1",
@@ -109,6 +122,13 @@ var constraintsForm1 = {
             within: [""],
             message: "can not be blanked."
         }
+    },
+    gender: {
+      presence: true,
+      exclusion: {
+          within: [""],
+          message: "can not be blanked."
+      }
     },
     inches: {
         presence: true,
@@ -200,6 +220,7 @@ class Signup extends Component {
         isDateTimePickerVisible: false,
         formShow: 1,
         loading: false,
+        gender:'',
         state: '',
         username: '',
         password: '',
@@ -244,6 +265,7 @@ class Signup extends Component {
                 city: this.props.signUpData.city,
                 zip_code: this.props.signUpData.zip_code,
                 state: this.props.signUpData.state,
+                gender: this.props.signUpData.gender,
                 licence_number: this.props.signUpData.licence_number,
                 licence_image: this.props.signUpData.licence_image,
                 username: this.props.signUpData.username,
@@ -283,6 +305,7 @@ class Signup extends Component {
             birthdate: this.state.birthdate,
             height: this.state.feets + "." + this.state.inches,
             street_address: this.state.address,
+            gender: this.state.gender,
             zip_code: this.state.zip_code,
             driver_licence_no: this.state.licence_number,
             city: this.state.city,
@@ -303,6 +326,7 @@ class Signup extends Component {
             zip_code: this.state.zip_code,
             city: this.state.city,
             state: this.state.state,
+            gender: this.state.gender,
             profile_image: this.state.profile_image,
             licence_photo: this.state.licence_image,
             driver_licence_no: this.state.licence_number,
@@ -345,6 +369,7 @@ class Signup extends Component {
             weight,
             inches,
             feets,
+            gender,
             profile_image
         } = this.state;
         let errors = validate({
@@ -354,6 +379,7 @@ class Signup extends Component {
             feets: feets,
             inches: inches,
             weight: weight,
+            gender:gender,
             profile_image: profile_image
         }, constraintsForm1);
 
@@ -366,6 +392,10 @@ class Signup extends Component {
             if (errors.last_name) {
                 showMessage({message: errors.last_name[0], type: "error"});
                 return false;
+            }
+            if (errors.gender) {
+              showMessage({message: errors.gender[0], type: "error"});
+              return false;
             }
             if (errors.birthdate) {
                 showMessage({message: errors.birthdate[0], type: "error"});
@@ -399,6 +429,7 @@ class Signup extends Component {
         this.props.signUpData.weight = this.state.weight;
         this.props.signUpData.feets = this.state.feets;
         this.props.signUpData.inches = this.state.inches;
+        this.props.signUpData.gender = this.state.gender;
         this.props.signUpData.profile_image = this.state.profile_image;
         this
             .props
@@ -622,6 +653,24 @@ class Signup extends Component {
                         autoCapitalize="words"
                         onChangeText={last_name => this.setState({last_name})}/>
                 </Item>
+
+                <View style={styles.item} last>
+                    <ModalSelector
+                        style={[{
+                            width: "100%",
+                            marginTop: 5,
+                            height: 40
+                        }
+                    ]}
+                        data={genders}
+                        value={this.state.state}
+                        initValue={this.state.state
+                        ? this.state.state
+                        : "Gender"}
+                        onChange={(option) => {
+                        this.setState({gender: option.key})
+                    }}/>
+                </View>
 
                 <Item style={styles.item} last>
                     <TouchableHighlight
