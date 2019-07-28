@@ -149,6 +149,7 @@ class AppCitizenSignupSerializer(serializers.Serializer):
     weight = serializers.DecimalField(max_digits=5,decimal_places=2,default=0)
     street_address = serializers.CharField(max_length=200)
     state = serializers.CharField(max_length=100)
+    gender = serializers.CharField(max_length=100)
     city = serializers.CharField(max_length=100)
     zip_code = serializers.CharField(max_length=100)
     city = serializers.CharField(max_length=100)
@@ -190,6 +191,7 @@ class AppCitizenSignupSerializer(serializers.Serializer):
            city=validated_data.get('city'),
            phone_no=validated_data.get('phone_no'),
            approved_user=0,
+           gender=validated_data.get('gender'),
            driver_licence_no=validated_data.get('driver_licence_no'),
            licence_photo=decode_based64_file(validated_data.get('licence_photo')),
            profile_image=decode_based64_file(validated_data.get('profile_image')),

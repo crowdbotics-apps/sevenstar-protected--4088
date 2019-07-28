@@ -19,7 +19,8 @@ class UserProfile(models.Model):
     )
     GENDER_CHOICES = (
         (0, 'Female'),
-        (1, 'Male')
+        (1, 'Male'),
+        (2, 'Other')
     )
     PAY_TICKETS = (
         (0, 'Pay Tickets'),
